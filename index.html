@@ -1,20 +1,30 @@
 <!DOCTYPE html>
+<!-- 声明文档类型为HTML5 -->
 <html lang="en">
+<!-- 根元素，设置语言为英语 -->
 
 <head>
+    <!-- 头部：包含元数据和链接外部资源 -->
     <meta charset="utf-8" />
+    <!-- 字符编码设置为UTF-8 -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- 响应式视口设置 -->
     <meta name="description" content="Academic Webpage" />
+    <!-- 页面描述 -->
     <meta name="author" content="senli1073" />
+    <!-- 作者信息 -->
     <title id="title"></title>
+    <!-- 页面标题（动态设置） -->
 
-    <!-- Icon -->
+    <!-- 图标 -->
     <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+    <!-- 网站图标 -->
 
-    <!-- Bootstrap icons-->
+    <!-- Bootstrap图标 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- 引入Bootstrap图标库 -->
 
-    <!-- Google fonts-->
+    <!-- Google字体 -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap"
         rel="stylesheet" />
@@ -23,73 +33,62 @@
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap"
         rel="stylesheet" />
+    <!-- 引入三种Google字体 -->
 
-    <!-- Core theme CSS (includes Bootstrap)-->
+    <!-- 核心CSS样式（包含Bootstrap） -->
     <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
     <link type="text/css" href="static/css/main.css" rel="stylesheet" />
 
-    <!-- Bootstrap core JS-->
+    <!-- Bootstrap核心JS -->
     <script type="text/javascript" src="static/js/bootstrap.bundle.min.js"></script>
+    <!-- 引入编译后的Bootstrap JS -->
 
-    <!-- For Compatability -->
+    <!-- 兼容性填充 -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    
-    <!-- Markdown -->
-    <script type="text/javascript" src="static/js/marked.min.js"></script>
+    <!-- 为旧浏览器提供ES6特性支持 -->
 
-    <!-- Mathematics -->
+    <!-- Markdown解析库 -->
+    <script type="text/javascript" src="static/js/marked.min.js"></script>
+    <!-- 用于客户端Markdown渲染 -->
+
+    <!-- 数学公式配置（MathJax） -->
     <script>
-        // See https://docs.mathjax.org/en/latest/index.html for more details.
+        // MathJax配置（TeX公式渲染设置）
         MathJax = {
             tex: {
-                packages: {},              // extensions to use
-                inlineMath: [              // start/end delimiter pairs for in-line math
-                    ['$', '$'],
-                    ['\\(', '\\)']
-                ],
-                displayMath: [             // start/end delimiter pairs for display math
-                    ['$$', '$$'],
-                    ['\\[', '\\]']
-                ],
-                processEscapes: false,      // use \$ to produce a literal dollar sign
-                processEnvironments: true, // process \begin{xxx}...\end{xxx} outside math mode
-                processRefs: true,         // process \ref{...} outside of math mode
-                digits: /^(?:[0-9]+(?:\{,\}[0-9]{3})*(?:\.[0-9]*)?|\.[0-9]+)/,    // pattern for recognizing numbers
-                tags: 'all',              // or 'ams' or 'all'
-                tagSide: 'right',          // side for \tag macros
-                tagIndent: '0.8em',        // amount to indent tags
-                useLabelIds: true,         // use label name rather than tag for ids
-                maxMacros: 10000,          // maximum number of macro substitutions per expression
-                maxBuffer: 5 * 1024,       // maximum size for the internal TeX string (5K)
-                // baseURL:                   // URL for use with links to tags (when there is a <base> tag in effect)
-                // (document.getElementsByTagName('base').length === 0) ? '' : String(document.location).replace(/#.*$/, ''),
-                formatError:               // function called when TeX syntax errors occur
-                    (jax, err) => jax.formatError(err)
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式分隔符
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式分隔符
+                tags: 'all', // 允许公式标签
+                processEscapes: true // 允许使用\$转义美元符号
             }
         };
     </script>
-    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <!-- 引入MathJax渲染引擎 -->
     <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-    <!-- Core JS-->
-    <script type="text/javascript" src="static/js/scripts.js"></script>
-    <script type="text/javascript" src="static/js/js-yaml.min.js"></script>
 
+    <!-- 核心JS脚本 -->
+    <script type="text/javascript" src="static/js/scripts.js"></script>
+    <!-- 自定义脚本 -->
+    <script type="text/javascript" src="static/js/js-yaml.min.js"></script>
+    <!-- YAML解析库 -->
 </head>
 
 <body id="page-top">
-    <!-- Navigation-->
+    <!-- 页面主体，顶部锚点 -->
+
+    <!-- 导航栏 -->
     <nav class="header navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
         <div class="container px-5">
             <a id="page-top-title" class="navbar-brand fw-bold" href="#page-top"></a>
-            <!-- <a href="#page-top"><img src="static/assets/img/CUMT_LOGO.svg" style="width: 11rem;"></a> -->
+            <!-- 动态设置的品牌标题 -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 MENU
-                <i class="bi-list"></i>
+                <i class="bi-list"></i> <!-- 汉堡菜单图标 -->
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
+                    <!-- 导航菜单项 -->
                     <li class="nav-item">
                         <a class="nav-link me-lg-3" href="#page-top">HOME</a>
                     </li>
@@ -99,72 +98,70 @@
                     <li class="nav-item">
                         <a class="nav-link me-lg-3" href="#awards">AWARDS</a>
                     </li>
-
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Top Section -->
+    <!-- 顶部背景图区域 -->
     <section class="top-section" style="background-image: url('static/assets/img/background.jpeg');">
         <div class="top-section-content">
             <div class="container px-5">
                 <h2 id="top-section-bg-text" class="text-white display-3 lh-1 font-alt"></h2>
+                <!-- 动态背景文字 -->
             </div>
         </div>
     </section>
-    <!-- Top Section -->
 
-    <!-- Photo -->
+    <!-- 头像 -->
     <div class="container px-5">
         <div id="avatar">
             <img class="shadow" src="static/assets/img/photo.png">
+            <!-- 圆形阴影头像 -->
         </div>
     </div>
-    <!-- Photo -->
-    
-    <!-- Home -->
+
+    <!-- 主页内容 -->
     <section class="bg-gradient-primary-to-secondary-light mt5 md5" id="home">
         <div class="container px-5">
             <header>
                 <h2 id="home-subtitle"> </h2>
-                <!-- <span class="bi bi-list"></span> -->
+                <!-- 动态子标题 -->
             </header>
             <div class="main-body" id="home-md"></div>
+            <!-- Markdown内容容器 -->
         </div>
     </section>
-    <!-- Home -->
 
-    <!-- Publications -->
+    <!-- 出版物部分 -->
     <section class="bg-gradient-primary-to-secondary-gray mt5 md5" id="publications">
         <div class="container px-5">
             <header>
                 <h2 id="publications-subtitle"><i class="bi bi-file-text-fill"></i>&nbsp;PUBLICATIONS</h2>
+                <!-- 带图标的标题 -->
             </header>
             <div class="main-body" id="publications-md"></div>
-
+            <!-- 动态加载出版物内容 -->
         </div>
     </section>
-    <!-- Publications  -->
 
-    <!-- Awards -->
+    <!-- 获奖部分 -->
     <section class="bg-gradient-primary-to-secondary-light mt5 md5" id="awards">
         <div class="container px-5">
             <header>
                 <h2 id="awards-subtitle"><i class="bi bi-award-fill"></i>AWARDS </h2>
             </header>
             <div class="main-body" id="awards-md"></div>
-
+            <!-- 动态加载获奖内容 -->
         </div>
     </section>
-    <!-- Awards -->
 
-
-    <!-- Footer-->
+    <!-- 页脚 -->
     <footer class="bg-bottom text-center py-5">
         <div class="container px-5">
             <div class="text-white-50 small">
                 <div id="copyright-text" class="mb-2"></div>
+                <!-- 动态版权信息 -->
                 <a id="github-link" href="https://github.com/senli1073">Github</a>
                 <span class="mx-1">&middot;</span>
                 <a id="license-link" href="https://github.com/senli1073/senli1073.github.io/blob/main/LICENSE">License</a>
@@ -173,5 +170,4 @@
     </footer>
 
 </body>
-
 </html>
