@@ -1,14 +1,14 @@
 
 
-![Github Forks](https://img.shields.io/github/forks/senli1073/senli1073.github.io?style=flat)
-![Github Stars](https://img.shields.io/github/stars/senli1073/senli1073.github.io?style=flat)
-![License](https://img.shields.io/github/license/senli1073/senli1073.github.io)
-![Last Commit](https://img.shields.io/github/last-commit/senli1073/senli1073.github.io)
+![Github Forks](https://img.shields.io/github/forks/singularguy/singularguy.github.io?style=flat)
+![Github Stars](https://img.shields.io/github/stars/singularguy/singularguy.github.io?style=flat)
+![License](https://img.shields.io/github/license/singularguy/singularguy.github.io)
+![Last Commit](https://img.shields.io/github/last-commit/singularguy/singularguy.github.io)
 
 # A simple Github Pages template for academic personal website.
 
 ## Preview
-[![Screenshot of the Website](https://raw.githubusercontent.com/senli1073/senli1073.github.io/main/screenshot_full.png)](https://senli1073.github.io/)
+[![Screenshot of the Website](https://raw.githubusercontent.com/singularguy/singularguy.github.io/main/screenshot_full.png)](https://singularguy.github.io/)
 
 
 ## Introduction
@@ -19,7 +19,7 @@ The template is designed to integrate Markdown files as content input.  There's 
 
 This template supports LaTeX formula input. You can use `$...$` and `\(...\)` as delimiters for inline-math, or use `$$...$$` and `\[...\]` as delimiters for display-math. Macros such as `\ref{...}`, `\eqref{...}`, and `\begin{equation}...\end{equation}` are also supported. See [MathJax](https://docs.mathjax.org/en/latest/index.html) for more details.
 
-:milky_way: Demo: https://senli1073.github.io/
+:milky_way: Demo: https://singularguy.github.io/
 
 
 ## Getting Start
