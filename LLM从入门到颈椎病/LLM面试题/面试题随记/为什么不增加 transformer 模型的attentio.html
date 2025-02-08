@@ -1,0 +1,143 @@
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../style.css">
+    <base target="_parent">
+    <title data-trilium-title>为什么不增加 transformer 模型的attention模块中的头的数量？</title>
+  </head>
+  
+  <body>
+    <div class="content">
+       <h1 data-trilium-h1>为什么不增加 transformer 模型的attention模块中的头的数量？</h1>
+
+      <div class="ck-content">
+        <hr>
+        <blockquote>
+          <p>本文是根据 <a href="https://www.zhihu.com/question/3366352749/answer/77811533929">https://www.zhihu.com/question/3366352749/answer/77811533929</a> 文章的总结修改精炼</p>
+        </blockquote>
+        <p><strong>省流版：</strong>
+        </p>
+        <p>本文介绍了四种不同的视角来尝试解释为什么不能无限制地增加 attention head 数（按照标准 Transformer 的做法，这对应于减少
+          attention head 维数）：</p>
+        <p><strong>视角一：直觉</strong>
+          <br>在多头注意力机制中，注意力头数 $h$ 可看作是一个控制模型自由度的超参数。<strong>太小了约束太强，太大了模型不容易优化，所以就需要一个合适的约束，而不能无限制地增加注意力头数量</strong>。</p>
+        <p><strong>视角二：集成模型</strong>
+          <br>多头注意力实际上是将一个大模型（全维度的 self-attention）拆分为几个小模型（每个 head 的 self-attention）的集成。这在一定程度上能够解释为什么每个
+          head 降低了维度，但是整体效果更好。但我们不能让每个小模型太小（维度太低），以防止它们表现太差。</p>
+        <p><strong>视角三：Johnson-Lindenstrauss 引理</strong>
+          <br>为了维持降维后的 embedding 精度，attention head 的维度不能过低，因此 head 数量就不能太多。</p>
+        <p><strong>视角四：理论研究</strong>
+          <br>当 attention head 维度太小时，不满足"全表征"性质。虽然与实际应用存在一定的 gap，但它为维度选择提供了理论依据。</p>
+        <hr>
+        <h2>正文</h2>
+        <h3>符号约定</h3>
+        <p>以 Decoder 结构为例，输入序列为 $x_1, x_2, ..., x_n \in \mathbb{R}^{1 \times d}$，其中
+          $d$ 为 token 的表征维度。定义：</p>
+        <p>$$ \begin{aligned} q_n &amp;= x_n W_q \quad &amp;(1) \ k_i &amp;= x_i
+          W_k \quad &amp;(2) \ v_i &amp;= x_i W_v \quad &amp;(3) \end{aligned} $$</p>
+        <p>单头注意力输出为加权和： $$ o_n = \alpha_1 v_1 + \alpha_2 v_2 + \cdots + \alpha_n
+          v_n \quad (4) $$ 权重计算为： $$ \alpha_i = \frac{\exp(q_n \cdot k_i)}{\sum_{j=1}^n
+          \exp(q_n \cdot k_j)} \quad (5) $$</p>
+        <p>
+          <img src="为什么不增加 transformer 模型的attentio.webp">
+          <br><i>图 1 单头注意力计算示意图</i>
+        </p>
+        <p>多头注意力将向量切片为 $h$ 个子向量，拼接后通过全连接层： $$ o_n = \left[o_n^{(1)}, o_n^{(2)}, \ldots,
+          o_n^{(h)}\right] W_o \quad (6) $$</p>
+        <p>
+          <img src="1_为什么不增加 transformer 模型的attentio.webp">
+          <br><i>图 2 多头注意力计算示意图（h=4）</i>
+        </p>
+        <hr>
+        <h2>视角一：直觉分析</h2>
+        <p>单头注意力是多头注意力的约束形式： $$ o_n = \sum_{j=1}^h \left[ \sum_{i=1}^n \alpha_{i,j}
+          v_i^{(j)} \right] \quad (1.2) $$ 当所有子向量权重 $\alpha_{i,1}=\alpha_{i,2}=\cdots=\alpha_{i,h}$
+          时退化为单头注意力。<strong>模型自由度需要平衡</strong>：</p>
+        <ul>
+          <li>自由度太低：约束过强（如 CNN 对 MLP 的约束）</li>
+          <li>自由度太高：优化困难（如 MLP 在图像任务中的表现）</li>
+        </ul>
+        <hr>
+        <h2>视角二：集成模型</h2>
+        <p>将大模型拆分为 $h$ 个子模型： $$ \begin{aligned} q_n^{(j)} &amp;= x_n W_q^{(j)} \quad
+          &amp;(2.2) \ k_i^{(j)} &amp;= x_i W_k^{(j)} \quad &amp;(2.3) \ v_i^{(j)}
+          &amp;= x_i W_v^{(j)} \quad &amp;(2.4) \end{aligned} $$ 总参数量保持 $d \times
+          d$，通过<strong>低秩性质</strong>和<strong>集成补偿</strong>实现信息保留：</p>
+        <ol>
+          <li>参数矩阵普遍具有低秩特性</li>
+          <li>子空间集成弥补单头信息损失</li>
+        </ol>
+        <hr>
+        <h2>视角三：Johnson-Lindenstrauss 引理</h2>
+        <p>对 $d$ 维空间中 $m$ 个点，存在线性映射 $f: \mathbb{R}^m \to \mathbb{R}^n$ 使得： $$ (1-\epsilon)|u-v|^2
+          \leq |f(u)-f(v)|^2 \leq (1+\epsilon)|u-v|^2 \quad (3.1) $$ 当 $n &gt; \frac{8
+          \ln m}{\epsilon^2}$ 时成立。以 LLaMA 3 的序列长度 8192 为例： $$ n &gt; 8 \ln 8192 \approx
+          73 \quad (3.2) $$ 实际使用 128 维度，验证了 JL 引理的实用性。</p>
+        <hr>
+        <h2>视角四：理论研究</h2>
+        <h3>1. Low-Rank Bottleneck (ICML'20)</h3>
+        <p>证明当 attention head 维度 $d_h &lt; n$（序列长度）时：</p>
+        <ul>
+          <li>存在无法表达的权重关系</li>
+          <li>输出 embedding 空间维度被压缩</li>
+          <li>理论建议 $d_h \geq n$，但实践表明"分辨率足够即可"</li>
+        </ul>
+        <h3>2. Memorization Capacity (ICLR'24)</h3>
+        <p>对一层 Transformer 的分析： $$ \begin{aligned} \text{记忆能力} &amp;= \Theta(Hn)
+          \quad (\text{当 } d_o = d) \ \text{参数量} &amp;= \Theta(Hd^2) \end{aligned}
+          $$ 结论：</p>
+        <ol>
+          <li>增加 $H$ 可提升记忆能力</li>
+          <li>当 $d_h &gt; n$ 时增益消失（验证 $d_h &lt; d$ 的合理性）</li>
+        </ol>
+        <hr>
+        <h2>总结</h2>
+        <figure class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>视角</th>
+                <th>核心矛盾</th>
+                <th>实践指导</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>直觉</td>
+                <td>自由度 vs 优化难度</td>
+                <td>选择中等 head 数</td>
+              </tr>
+              <tr>
+                <td>集成模型</td>
+                <td>子空间分辨率 vs 参数量</td>
+                <td>保持合理压缩率</td>
+              </tr>
+              <tr>
+                <td>JL 引理</td>
+                <td>降维精度 vs 计算成本</td>
+                <td>设置维度下限</td>
+              </tr>
+              <tr>
+                <td>理论研究</td>
+                <td>理论极限 vs 实际需求</td>
+                <td>超越最小阈值即可</td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <p>最终结论：<strong>注意力头数的选择本质是表达能力与优化难度的 tradeoff</strong>。</p>
+        <hr>
+        <h2>参考文献</h2>
+        <ol>
+          <li><a href="#ref1">^</a> Navon et al. <i>Low-Rank Bottleneck in Multi-head Attention Models.</i> ICML
+            2020. [[PDF]] (<a href="https://arxiv.org/abs/2002.07028">https://arxiv.org/abs/2002.07028</a>)</li>
+          <li><a href="#ref2">^</a> Zhang et al. <i>Memorization Capacity of Multi-Head Attention in Transformers.</i> ICLR
+            2024. [[PDF]] (<a href="https://arxiv.org/abs/2306.02010">https://arxiv.org/abs/2306.02010</a>)</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+
+</html>

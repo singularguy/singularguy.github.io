@@ -1,0 +1,1726 @@
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../../style.css">
+    <base target="_parent">
+    <title data-trilium-title>推理框架知识点</title>
+  </head>
+  
+  <body>
+    <div class="content">
+       <h1 data-trilium-h1>推理框架知识点</h1>
+
+      <div class="ck-content">
+        <hr />
+        
+<h2>created: 2025-01-25T00:41
+updated: 2025-01-26T02:20</h2>
+
+        
+<h2>目录</h2>
+
+        <ul>
+          <li><a href="#user-content-1.onnx%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86">1.ONNX的相关知识</a>
+          </li>
+          <li><a href="#user-content-2.tensorrt%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86">2.TensorRT的相关知识</a>
+          </li>
+          <li><a href="#user-content-3.Nvidia%E7%9B%B8%E5%85%B3%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8">3.Nvidia 相关容器镜像使用</a>
+          </li>
+          <li><a href="#user-content-4.%E5%B8%B8%E8%A7%81%E6%8E%A8%E7%90%86%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D">4.常见推理框架介绍</a>
+          </li>
+          <li><a href="#user-content-5.%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D">5.大模型推理框架介绍</a>
+          </li>
+          <li><a href="#user-content-6.TensorRT%E4%B9%8Btrtexec%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D">6.TensorRT之trtexec的简单使用介绍</a>
+          </li>
+          <li><a href="#user-content-7.TensorRT-llm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D">7.TensorRT-llm简单介绍</a>
+          </li>
+          <li><a href="#user-content-8.PytorchJIT%E5%92%8CTorchScript%E4%BB%8B%E7%BB%8D">8.PytorchJIT和TorchScript介绍</a>
+          </li>
+          <li><a href="#user-content-9.ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%8F%8A%E4%BC%98%E5%8C%96">9.ONNX模型转换及优化</a>
+          </li>
+          <li><a href="#user-content-10.onnxsim%E7%9A%84%E4%BB%8B%E7%BB%8D">10.onnxsim的介绍</a>
+          </li>
+          <li><a href="#user-content-11.TensorRT%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2">11.TensorRT模型转换</a>
+          </li>
+          <li><a href="#user-content-12.%E7%8E%B0%E6%9C%89%E7%9A%84%E4%B8%80%E4%BA%9B%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%EF%BC%9F">12.现有的一些移动端开源框架？</a>
+          </li>
+          <li><a href="#user-content-13.%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Btorch%E3%80%81torchvision%E3%80%81CUDA%E3%80%81cuDNN%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB">13.介绍一下torch、torchvision、CUDA、cuDNN之间的关系</a>
+          </li>
+          <li><a href="#user-content-14.%E5%A6%82%E4%BD%95%E5%B0%86ONNX%E6%A8%A1%E5%9E%8B%E4%BB%8EGPU%E5%88%87%E6%8D%A2%E5%88%B0CPU%E4%B8%AD%E8%BF%9B%E8%A1%8C%E7%BC%93%E5%AD%98%EF%BC%9F">14.如何将ONNX模型从GPU切换到CPU中进行缓存？</a>
+          </li>
+          <li><a href="#user-content-15.%E6%9C%89%E5%93%AA%E4%BA%9B%E5%B8%B8%E8%A7%81%E7%9A%84AI%E6%A8%A1%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83%E6%96%B9%E5%BC%8F%EF%BC%9F">15.有哪些常见的AI模型分布式训练方式？</a>
+          </li>
+          <li><a href="#user-content-16.%E6%9C%89%E5%93%AA%E4%BA%9B%E5%B8%B8%E8%A7%81%E7%9A%84AI%E6%A8%A1%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E6%8E%A8%E7%90%86%E6%96%B9%E5%BC%8F%EF%BC%9F">16.有哪些常见的AI模型分布式推理方式？</a>
+          </li>
+          <li><a href="#user-content-17.LightLLm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D">17.LightLLm简单介绍</a>
+          </li>
+          <li><a href="#user-content-18.TokenAttention%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D">18.LightLLm之TokenAttention简单介绍</a>
+          </li>
+          <li><a href="#user-content-19.LightLLm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D">19.LightLLm之Efficient Router简单介绍</a>
+          </li>
+          <li><a href="#user-content-20.%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BATensorRT%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%EF%BC%9F">20.如何构建TensorRT模型的缓存机制？</a>
+          </li>
+          <li><a href="#user-content-21.vLLm%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D%EF%BC%9F">21.vLLm架构介绍？</a>
+          </li>
+          <li><a href="#user-content-22.vLLm%E7%9A%84%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1%E4%B8%8E%E5%BC%95%E6%93%8E%E4%BB%8B%E7%BB%8D%EF%BC%9F">22.vLLm的推理服务与引擎介绍？</a>
+          </li>
+          <li><a href="#user-content-23.vLLm%E7%9A%84%E8%B0%83%E5%BA%A6%E5%99%A8%E4%B8%8Eblock%E5%88%86%E9%85%8D%EF%BC%9F">23.vLLm的调度器与block分配？</a>
+          </li>
+        </ul>
+        
+<h2>1.ONNX的相关知识</h2>
+
+        <p>ONNX是一种神经网络模型的框架，其最经典的作用是作为不同框架之间的中间件，成为模型表达的一个通用架构，来增加不同框架之间的交互性。</p>
+        <p>ONNX的优势：</p>
+        <ol>
+          <li>ONNX的模型格式有极佳的细粒度。</li>
+          <li>ONNX是模型表达的一个通用架构，主流框架都可以兼容。</li>
+          <li>ONNX可以实现不同框架之间的互相转化。</li>
+        </ol>
+        
+<h2>2.TensorRT的相关知识</h2>
+
+        <p>TensorRT是一个高性能的深度学习前向Inference的优化器和运行的引擎。</p>
+        <p>TensorRT的核心：将现有的模型编译成一个engine，类似于C++的编译过程。在编译engine过程中，会为每一层的计算操作找寻最优的算子方法，将模型结构和参数以及相应kernel计算方法都编译成一个二进制engine，因此在部署之后大大加快了推理速度。</p>
+        <p>我们需要给TensorRT填充模型结构和参数，也就是解析我们自己的模型结构和参数文件，获取数据放到其中。官方给了三种主流框架模型格式的解析器（parser），分别是：ONNX，Caffe以及TensorFlow。</p>
+        <p>TensorRT的优势：</p>
+        <ol>
+          <li>把一些网络层进行了合并。具体🌰如下图所示。</li>
+          <li>取消一些不必要的操作。比如不用专门做concat的操作等。</li>
+          <li>TensorRT会针对不同的硬件都相应的优化，得到优化后的engine。</li>
+          <li>TensorRT支持INT8和FP16的计算，通过在减少计算量和保持精度之间达到一个理想的trade-off。</li>
+        </ol>
+        <p>
+          <img src="推理框架知识点_b2b6037e-b4ef-46ba-9fa.jpg" alt="TensorRT对网络结构进行重构"
+          />
+        </p>
+        
+<h2>3.Nvidia相关容器镜像使用</h2>
+
+        <p>通过拉取镜像创建容器，可以免去繁琐的繁琐的环境安装步骤，只需要宿主机上安装Nvidia驱动即可，拉取的镜像中已经配置好cuda，tensorrt，tritonserver等相关需要的环境。以tritonserver为例介绍如何使用镜像，以及介绍triton框架的使用</p>
+        
+<h2>环境搭建</h2>
+
+        <ol>
+          <li>镜像拉取</li>
+        </ol>
+<pre><code class="language-sh">docker pull nvcr.io/nvidia/tritonserver:23.01-py3
+</code></pre>
+
+        <p>在拉取镜像的时候，需要检查镜像版本和NVIDIA驱动是否匹配，镜像的版本号和驱动版本存在对应关系,参考文档：<a href="https://docs.nvidia.com/deeplearning/triton-inference-server/release-notes/index.html">https://docs.nvidia.com/deeplearning/triton-inference-server/release-notes/index.html</a>
+        </p>
+        <ol>
+          <li>启动镜像</li>
+        </ol>
+<pre><code class="language-sh">docker run -dt --gpus=all -p 1237:22 --name triton -v /home/xxiao/code:/workspace/code nvcr.io/nvidia/tritonserver:23.01-py3
+</code></pre>
+
+        <p>--gpus该参数在下文config中详细讲解 报错解决：
+          <img src="推理框架知识点_16975149812428621.png"
+          alt="&quot;图片自定义高度&quot; height=&quot;&quot; width=&quot;&quot;" />运行docker的时候添加参数：</p>
+<pre><code class="language-sh">--cap-add=SYS_ADMIN --security-opt seccomp=unconfined
+</code></pre>
+
+        <ol>
+          <li>进去docker镜像后，执行</li>
+        </ol>
+<pre><code class="language-sh">tritonserver --model-repository=./model_repository
+</code></pre>
+
+        <p>--model-repository：该参数指定模型路径，必须要有 --help：查看其他参数 日志相关：--log-verbose=1 --log-info=true
+          目录结构如下
+          <img src="推理框架知识点_16969066644328920.png" alt="&quot;图片自定义高度&quot; height=&quot;&quot; width=&quot;&quot;"
+          />triton server会加载该目录下的所有模型，在资源足够的情况下，可以通过一个triton server启动所有的推理服务 config.pbtxt内容如下</p>
+<pre><code>name: "sam_embedding_onnx"
+platform: "onnxruntime_onnx"
+max_batch_size : 0
+input [
+  {
+    name: "images"
+    data_type: TYPE_FP32
+    dims: [ 1, 3, 1024, 1024 ]
+  }
+]
+output [
+  {
+    name: "image_embeddings"
+    data_type: TYPE_FP32
+    dims: [ 1, 256, 64, 64 ]
+  },
+  {
+    name: "interm_embeddings"
+    data_type: TYPE_FP32
+    dims: [ 1, 32, 256, 256 ]
+  }
+]
+instance_group [
+    {
+      count: 1
+      kind: KIND_GPU
+      gpus: [1]
+    }
+  ]
+</code></pre>
+
+        <p>各个字段含义</p>
+<pre><code class="language-txt">name：model-repository目录下的模型名称，需要保持一致
+platform：推理框架选择，实例选择的是onnx模型，对应的为onnxruntime_onnx
+常见平台有以下：
+    1、tensorflow_savedmodel: TensorFlow SavedModel 格式。
+    2、tensorflow_graphdef: TensorFlow GraphDef 格式。
+    3、tensorflow_cc: TensorFlow C++ 库。
+    4、pytorch_libtorch: PyTorch 的 LibTorch C++ 库。
+    5、onnxruntime_onnx: ONNX 运行时（ONNX Runtime）。
+    6、tensorrt_plan: NVIDIA TensorRT 的计划模型（plan file）。
+    7、custom: 自定义平台，允许用户自行实现推理后端。
+max_batch_size：当定义为0时，动态输入
+input：定义模型的输入节点，（目前看来必须满足NCHW和NHWC格式），
+    name：输入节点名称
+    data_type：根据实际数据精度填写
+    dims：输入shape
+output：模型输出节点，同输入信息定义
+instance_group：设备信息定义
+    count：启动实例个数
+    kind：设备类型（CPU、GPU，可能NPU）
+    gpus：模型运行在那个GPU上。
+triton server服务是以多进程的方式运行，--gpus指定了多少块GPU就会启动多少个进程，模型会运行在instance_group/gpus指定的gpu上，若不指定gpu，则在所有的gpu上运行
+</code></pre>
+
+        <p>启动triton server服务成功后，会开启三个端口供访问，
+          <img src="推理框架知识点_16969085830307693.png"
+          alt="&quot;图片自定义高度&quot; height=&quot;&quot; width=&quot;&quot;" />8000：HTTPService 8001：GRPCInferenceService 8002：Metrics Service</p>
+        <p>客户端访问实例：</p>
+<pre><code class="language-python">import numpy as np
+import tritonclient.http as httpclient
+triton_client = httpclient.InferenceServerClient(url="localhost:8000", verbose=False)
+model_name = "sam_embedding_onnx"
+inputs = []
+inputs.append(httpclient.InferInput('images',[1, 3, 1024, 1024], "FP32"))
+inputs[0].set_data_from_numpy(np.random.randn(1, 3, 1024, 1024).astype(np.float32),binary_data=False)
+
+outputs = []
+outputs.append(httpclient.InferRequestedOutput('image_embeddings'))
+outputs.append(httpclient.InferRequestedOutput('interm_embeddings'))
+results = triton_client.infer(model_name,inputs, outputs=outputs)
+print(results.as_numpy('interm_embeddings').shape)
+print(results.as_numpy('image_embeddings').shape)
+</code></pre>
+
+        <p>triton server只负责模型加载和推理，有关具体模型的前后处理，需要在客户端代码中实现</p>
+        
+<h3>参考项目</h3>
+
+        <p><a href="https://github.com/yuxiaoranyu/stable_diffusion_trt_triton">https://github.com/yuxiaoranyu/stable_diffusion_trt_triton</a>
+该项目使用tensorrt和triton部署stable_diffusion
+          图生图模块</p>
+        
+<h2>4.常见推理框架介绍</h2>
+
+        
+<h3>onnxruntime</h3>
+
+        <p>onnxruntime是微软推出的一款推理框架，用户可以非常便利的用其运行一个onnx模型。onnxruntime支持多种运行后端，包括CPU、GPU、TensorRT、DML等。</p>
+        
+<h3>TensorRT</h3>
+
+        <p>TensorRT是一个高性能的深度学习推理优化器，可以为深度学习应用提供低延迟、高吞吐率的模型部署。TensorRT可用于对超大规模数据中心、嵌入式平台或自动驾驶平台进行推理加速。TensorRT现在已经能支持TensorFlow、caffe、mxnet、pytorch等几乎所有的深度学习框架，将TensorRT和Nvidia的GPU结合起来，能在几乎所有的框架中进行快速和高效的部署推理。</p>
+        
+<h3>OpenVino</h3>
+
+        <p>OpenVino是英特尔针对自家硬件平台开发的一套深度学习工具库，包含推理库、模型优化等一些列与深度学习模型部署相关的功能。OpenVino是一个比较成熟且仍在快速发展的推理库，提供的demo和sample都很充足，上手比较容易，可以用来快速部署开发，尤其是Intel的硬件平台上性能超过了大部分的开源库。</p>
+        
+<h3>Tengine</h3>
+
+        <p>Tengine是OPEN AI LAB（开放智能）推理的AI推理框架，致力于解决AIoT应用场景下多厂家多种类的边缘AI芯片与多样的训练框架、算法模型之间的相互兼容适配，同时提升算法在芯片上的运行性能，将从云端完成训练后的算法高效迁移到异构的边缘智能芯片上执行，缩短AI应用开发与部署周期，助力加速AI产业化落地。</p>
+        
+<h3>NCNN</h3>
+
+        <p>NCNN是一个为手机端极致优化的高性能神经网络前向计算框架。NCNN从设计之初深刻考虑手机端的部署和应用。无第三方依赖、跨平台，手机端cpu的速度快于目前所有已知的开源框架。目前已在腾讯多款应用中使用，如QQ、Qzone、微信等。</p>
+        
+<h3>MNN</h3>
+
+        <p>MNN是一个高效、轻量的深度学习框架。它支持深度模型推理与训练，尤其在端侧的推理与训练性能在业界处于领先地位。目前MNN已经在阿里巴巴的手机淘宝、天猫、优酷、钉钉、闲鱼等20多个app中使用，覆盖直播、短视频、搜多推荐、商品图像搜索、互动营销、券已发放、安全风控等70多个场景。</p>
+        
+<h3>TFLite</h3>
+
+        <p>TensorFlowLite是Google在2017年5月推出的轻量级机器学习解决方案，主要针对移动端设备和嵌入式设备。针对移动端设备特点，TensorFlow
+          Lite是用来诸多技术对内核进行了定制优化，预熔激活，量子化内核。</p>
+        
+<h2>5.大模型推理框架介绍</h2>
+
+        
+<h3>vLLM</h3>
+
+        <p>vLLM全称Virtual Large Language Model，由Nvidia开源，旨在降低大模型推理的显存占用。其核心思想是将模型的一部分保存在CPU内存或硬盘上，只将当前计算所需的部分加载到GPU显存中，从而打破GPU显存限制。</p>
+        <p>vLLM支持PyTorch和FasterTransformer后端，可无缝适配现有模型。使用vLLM，在配备96GB内存+440GB A100的服务器上可运行1750亿参数模型，在配备1.5TB内存+880GB
+          A100的服务器上可运行6万亿参数模型。</p>
+        
+<h3>TensorRT-LLM</h3>
+
+        <p>Tensorrt-LLM是Nvidia在TensorRT推理引擎基础上，针对Transformer类大模型推理优化的框架。主要特性包括：</p>
+        <ol>
+          <li>支持多种优化技术，如kernel融合、矩阵乘优化、量化感知训练等，可提升推理性能</li>
+          <li>支持多GPU多节点部署，可扩展到万亿规模参数</li>
+          <li>提供Python和C++ API，易于集成和部署 在Nvidia测试中，基于OPT-30B在A100上的推理，Tensorrt-LLM可实现最高32倍加速。</li>
+        </ol>
+        
+<h3>DeepSpeed</h3>
+
+        <p>DeepSpeed是微软开源的大模型训练加速库，最新的DeepSpeed-Inference也提供了推理加速能力，主要特点包括：</p>
+        <ol>
+          <li>通过内存优化、计算优化、通信优化，降低推理延迟和提升吞吐</li>
+          <li>支持多GPU横向扩展，单卡可推理数百亿参数模型</li>
+          <li>提供Transformer、GPT、BERT等模型的推理示例</li>
+          <li>集成Hugging Face transformers库，使用简单</li>
+        </ol>
+        <p>在GPT-NeoX测试中，基于DeepSpeed的推理相比原生PyTorch可实现7.7倍加速。</p>
+        
+<h3>Text Generation Inference</h3>
+
+        <p>Text Generation Inference(简称TextGen)是Hugging Face主导的开源推理框架，旨在为自然语言生成模型如GPT、OPT等提供高性能推理。主要特点包括：</p>
+        <ol>
+          <li>高度优化的核心代码，支持FP16、int8等多种精度</li>
+          <li>支持多GPU多节点扩展，可推理万亿规模参数</li>
+          <li>良好的用户体验，提供Python高层API，简化开发</li>
+          <li>支持Hugging Face生态中的模型，如GPT2、GPT-Neo、BLOOM等</li>
+        </ol>
+        <p>在OPT-175B基准测试中，TextGen可实现最高17倍推理加速。</p>
+        
+<h3>Torch Dynamo</h3>
+
+        <p>Torch Dynamo是PyTorch官方开发的一种动态图优化工具，旨在提高PyTorch模型的执行效率。它通过在运行时捕获和跟踪Python代码的执行，动态地将PyTorch的eager模式（即时模式）代码转换为更高效的图模式代码。这一转换使得
+          PyTorch模型在执行时能够更加接近静态图框架的性能，同时仍然保持PyTorch动态计算图的灵活性。</p>
+        <p>Torch Dynamo的核心思想是：</p>
+        <ol>
+          <li><strong>捕获 Python 函数的执行</strong>：在 Python 代码执行时，Torch Dynamo 会捕获函数的执行，分析其逻辑和计算图结构。</li>
+          <li><strong>动态转换</strong>：它将捕获的代码转换为一个静态的、高效的中间表示（IR）。这种表示更容易进行进一步的优化，例如内存管理、算子融合等。</li>
+          <li><strong>执行优化的代码</strong>：在转换完成后，优化后的代码会被重新执行，以获得更高的执行性能。</li>
+        </ol>
+        <p>这个过程是透明的，对于用户来说，不需要修改现有的 PyTorch 代码。</p>
+        
+<h3>FullyShardedDataParallel (FSDP)</h3>
+
+        <p><strong>FullyShardedDataParallel (FSDP)</strong> 是 PyTorch 提供的一种分布式数据并行训练技术，专门设计用于大规模模型的高效训练。它通过将模型的参数、梯度和优化器状态全面分片（sharding），并分布在多个
+          GPU 上，以优化内存使用，提升训练效率。FSDP 尤其适用于处理超大模型，这些模型通常无法在单个 GPU 内存中完全容纳。</p>
+        <p>FSDP 的工作原理：</p>
+        <ol>
+          <li>
+            <p><strong>全分片</strong>：</p>
+            <ul>
+              <li>在传统的数据并行方法中，每个 GPU 上通常保存一份完整的模型副本，这样在处理超大模型时，会导致显存的巨大浪费。FSDP 的核心思想是将模型的参数、梯度和优化器状态按需分片，并分布在不同的
+                GPU 上。</li>
+              <li>在每次前向和后向传播时，FSDP 会动态地将所需的分片参数加载到 GPU 上，并在计算完梯度后重新分片。</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>高效的内存管理</strong>：</p>
+            <ul>
+              <li>通过分片技术，FSDP 可以极大地减少每个 GPU 所需的显存，从而能够处理更大的模型或在同一显存中容纳更多的模型参数。</li>
+              <li>这种内存优化的机制使得即便是在显存资源受限的环境下，也能进行超大规模模型的训练。</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>与 ZeRO 的关系</strong>：</p>
+            <ul>
+              <li>FSDP 是一种全分片的数据并行方法，与 DeepSpeed 的 ZeRO 优化策略有一些相似之处。ZeRO 也通过将模型参数、梯度和优化器状态分散到多个设备上来减少显存使用。FSDP
+                可以被视为 ZeRO 的一种 PyTorch 原生实现，它与 PyTorch 的其他分布式训练功能高度集成。</li>
+            </ul>
+          </li>
+        </ol>
+        
+<h3>Megatron-LM</h3>
+
+        <p><strong>Megatron-LM</strong> 是由 NVIDIA 开发的一种用于训练超大规模语言模型的深度学习框架。随着语言模型规模的不断扩大，训练这些模型变得越来越具有挑战性，特别是在处理数十亿到数万亿参数的模型时。Megatron-LM
+          专门设计来解决这些挑战，它通过多种并行化技术（如模型并行、数据并行和流水线并行）实现了高效的大规模模型训练。</p>
+        <p>Megatron-LM 的工作原理：</p>
+        <ol>
+          <li>
+            <p><strong>模型并行（Model Parallelism）</strong>：</p>
+            <ul>
+              <li>在模型并行中，Megatron-LM 将一个巨大的模型分割成多个部分，每个部分分配给不同的 GPU。这种方法允许单个模型跨多个 GPU 进行训练，从而突破单个
+                GPU 显存的限制。</li>
+              <li>具体实现包括将神经网络层或层内的参数矩阵划分到不同的设备上，并行计算。</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>数据并行（Data Parallelism）</strong>：</p>
+            <ul>
+              <li>Megatron-LM 也使用了数据并行技术，即将输入数据批次拆分为多个子批次，每个子批次在不同的 GPU 上独立计算梯度。然后，梯度在所有
+                GPU 之间进行同步，以确保模型参数的一致更新。</li>
+              <li>数据并行是深度学习中常见的并行化方法，特别是在处理大型数据集时非常有效。</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>流水线并行（Pipeline Parallelism）</strong>：</p>
+            <ul>
+              <li>为了进一步提高并行计算效率，Megatron-LM 引入了流水线并行。这种方法将模型的前向和后向传播过程划分为多个阶段，每个阶段在不同的 GPU
+                上执行。通过流水线并行，不同阶段可以同时进行，从而减少计算的等待时间，提高 GPU 利用率。</li>
+              <li>流水线并行类似于工厂的流水线作业，不同的计算任务在不同的时刻完成，但最终达成整体的并行加速效果。</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>张量并行（Tensor Parallelism）</strong>：</p>
+            <ul>
+              <li>Megatron-LM 还支持张量并行，它进一步将模型的张量操作分解为更小的计算单元，这些单元分布在多个 GPU 上。这种方法特别适合处理超大规模的矩阵乘法等操作。</li>
+            </ul>
+          </li>
+        </ol>
+        
+<h2>6.TensorRT之trtexec的简单使用介绍</h2>
+
+        
+<h3>简介</h3>
+
+        <p>trtexec是一种无需开发自己的应用程序即可快速使用 TensorRT 的工具。trtexec工具有三个主要用途：</p>
+        <ol>
+          <li>它对于在随机或用户提供的输入数据上对网络进行基准测试很有用。</li>
+          <li>它对于从模型生成序列化引擎很有用。</li>
+          <li>它对于从构建器生成序列化时序缓存很有用。</li>
+        </ol>
+        
+<h3>转换模型（onnx为例）</h3>
+
+        <ol>
+          <li>将ONNX模型转换为静态batchsize的TensorRT模型，启动所有精度以达到最佳性能，工作区大小设置为1024M</li>
+        </ol>
+<pre><code>trtexec --onnx=mnist.onnx --explicitBatch --saveEngine=mnist.trt --workspace=1024 --best
+</code></pre>
+
+        <ol>
+          <li>将ONNX模型转换为动态batchsize的TensorRT模型，启动所有精度以达到最佳性能，工作区大小设置为1024M</li>
+        </ol>
+<pre><code>trtexec --onnx=mnist.onnx --minShapes=input:&lt;shape_of_min_batch&gt; --optShapes=input:&lt;shape_of_opt_batch&gt; --maxShapes=input:&lt;shape_of_max_batch&gt; --saveEngine=mnist.trt --best --workspace=1024 --best
+</code></pre>
+
+        <p>–minShapes，–optShapes ，–maxShapes必须全部设置，设置的形式为：NCHW</p>
+        
+<h3>运行模型</h3>
+
+        <ol>
+          <li>在具有静态输入形状的全维模式下运行 ONNX 模型</li>
+        </ol>
+<pre><code>trtexec --onnx=model.onnx --shapes=input:32x3x224x224
+</code></pre>
+
+        <ol>
+          <li>使用给定的输入形状在全维模式下运行 ONNX 模型</li>
+        </ol>
+<pre><code>trtexec --onnx=model.onnx --shapes=input:32x3x224x224
+</code></pre>
+
+        <ol>
+          <li>使用一系列可能的输入形状对 ONNX 模型进行基准测试</li>
+        </ol>
+<pre><code>trtexec --onnx=model.onnx --minShapes=input:1x3x224x224 --optShapes=input:16x3x224x224 --maxShapes=input:32x3x224x224 --shapes=input:5x3x224x224
+</code></pre>
+
+        
+<h3>网络性能测试</h3>
+
+        <ol>
+          <li>加载转换后的TensorRT模型进行性能测试，指定batch大小</li>
+        </ol>
+<pre><code>trtexec --loadEngine=mnist16.trt --batch=1
+</code></pre>
+
+        <ol>
+          <li>收集和打印时序跟踪信息</li>
+        </ol>
+<pre><code>trtexec --deploy=data/AlexNet/AlexNet_N2.prototxt --output=prob --exportTimes=trace.json
+</code></pre>
+
+        <ol>
+          <li>使用多流调整吞吐量
+            <br />调整吞吐量可能需要运行多个并发执行流。例如，当实现的延迟完全在所需阈值内时，我们可以增加吞吐量，即使以一些延迟为代价。例如，为批量大小 1
+            和 2 保存引擎并假设两者都在 2ms 内执行，延迟阈值：</li>
+        </ol>
+<pre><code>trtexec --deploy=GoogleNet_N2.prototxt --output=prob --batch=1 --saveEngine=g1.trt --int8 --buildOnly
+trtexec --deploy=GoogleNet_N2.prototxt --output=prob --batch=2 --saveEngine=g2.trt --int8 --buildOnly
+</code></pre>
+
+        <p>保存的引擎可以尝试找到低于 2 ms 的组合批次/流，以最大化吞吐量：</p>
+<pre><code>trtexec --loadEngine=g1.trt --batch=1 --streams=2
+trtexec --loadEngine=g1.trt --batch=1 --streams=3
+trtexec --loadEngine=g1.trt --batch=1 --streams=4
+trtexec --loadEngine=g2.trt --batch=2 --streams=2
+</code></pre>
+
+        
+<h3>参考文档</h3>
+
+        <p><a href="https://github.com/NVIDIA/TensorRT/tree/main/samples/trtexec">https://github.com/NVIDIA/TensorRT/tree/main/samples/trtexec</a>
+        </p>
+        
+<h2>7.TensorRT-llm简单介绍</h2>
+
+        
+<h3>简介</h3>
+
+        <p>TensorRT-LLM（NVIDIA官方支持）用于在NVIDIA GPU平台做大模型推理部署工作。
+          <br />TRT-LLM基于TensorRT来将LLM构建为engine模型</p>
+        <p>TRT-LLM目前支持多种大模型，可以直接使用，在example中，而且还在以非常快的速度支持新的模型</p>
+        <p>TRT-LLM支持单机单卡、单机多卡（NCCL）、多机多卡，支持量化（8/4bit）</p>
+        <p>TRT-LLM的runtime支持chat和stream两种模式</p>
+        <p>TRT-LLM当前支持python和cpp（可以直接使用cpp，也可以使用cpp的bybind接口）两种模式的runtime</p>
+        <p>通过example下的各个模型的build.py来构建离线模型，通过example下的run.py（不同的业务适配一下run.py中的逻辑即可）来运行模型</p>
+        <p>TRT-LLM默认支持kv-cache，支持PagedAttention，支持flashattention，支持MHA/MQA/GQA等</p>
+        
+<h3>安装使用</h3>
+
+        <p>docker编译安装</p>
+<pre><code>// docker方式编译
+step1: 安装操作系统匹配的docker，参考docker安装方式即可
+step2: 下载 tensorrt-llm代码
+
+# TensorRT-LLM uses git-lfs, which needs to be installed in advance.
+apt-get update &amp;&amp; apt-get -y install git git-lfs
+
+git clone https://github.com/NVIDIA/TensorRT-LLM.git
+cd TensorRT-LLM
+git submodule update --init --recursive
+git lfs install
+git lfs pull
+// 上述每步都需要执行成功，由于网络问题，可能会失败，失败后重复执行，直到成功位置
+// git lfs 这两步会将 tensorrt-llm/cpp/tensort-llm/batch_manager 下面的静态库 下载下来，后来编译会用到
+batch_manager/
+├── aarch64-linux-gnu
+│   ├── libtensorrt_llm_batch_manager_static.a
+│   ├── libtensorrt_llm_batch_manager_static.pre_cxx11.a
+│   └── version.txt
+├── x86_64-linux-gnu
+│   ├── libtensorrt_llm_batch_manager_static.a
+│   └── libtensorrt_llm_batch_manager_static.pre_cxx11.a
+└── x86_64-windows-msvc
+    └── tensorrt_llm_batch_manager_static.lib
+
+step3：编译llm，提供了两种方式
+方式一：一步到位的编译方式，推荐这种
+make -C docker release_build  // 编译，此处cuda/tensorrt/cudnn/nccl等版本都是采用编译脚本中默认设置的
+                              // 编译成功后，为一个docker镜像，大概有20多G，另外，docker方式编译对磁盘空间大小有要求
+                              // 目前估计需要50G左右，如果docker的根目录空间不够，编译也会失败，可以通过给docker根目
+                              //  扩容或者修改根目录来实现，保证编译空间的足够
+
+make -C docker release_run // 运行编译成功的镜像, 此处需要有gpu办卡，如果在没有gpu的环境上，可以编译成功，但是执行会失败
+
+方式二：逐步进行编译，编译结果和上述一致
+</code></pre>
+
+        <p>编译有2种包，一种是仅包含cpp的代码包，一种是cpp+python的wheel包</p>
+<pre><code>//  仅cpp的代码包 ： 仅编译 TensorRT-LLM/cpp 下面的c++和cuda代码
+// cpp + python的包： 编译 TensorRT-LLM/cpp 和 TensorRT-LLM/tensortrt-llm 下面的c++ cuda python代码
+</code></pre>
+
+        
+<h3>参考文档</h3>
+
+        <p><a href="https://github.com/NVIDIA/TensorRT-LLM/blob/release/0.5.0/docs/source/installation.md">https://github.com/NVIDIA/TensorRT-LLM/blob/release/0.5.0/docs/source/installation.md</a>
+        </p>
+        
+<h2>8.PytorchJIT和TorchScript介绍</h2>
+
+        
+<h3>简介</h3>
+
+        <p>PyTorch支持两种模式：eager模式和script模式。eager模式主要用于模型的编写、训练和调试，script模式主要是针对部署的，其包含PytorchJIT和TorchScript
+          <br
+          />script模式使用torch.jit.trace和torch.jit.script创建一个PyTorch eager module的中间表示（intermediate
+          representation, IR），IR 经过内部优化，并在运行时使用 PyTorch JIT 编译。PyTorch JIT 编译器使用运行时信息来优化
+          IR。该 IR 与 Python 运行时是解耦的。 PyTorch JIT（Just-In-Time Compilation）是 PyTorch
+          中的即时编译器。</p>
+        <p>它允许你将模型转化为 TorchScript 格式，从而提高模型的性能和部署效率。 JIT 允许你在动态图和静态图之间无缝切换。你可以在 Python
+          中以动态图的方式构建和调试模型，然后将模型编译为 TorchScript 以进行优化和部署。 JIT 允许你在不同的深度学习框架之间进行模型转换，例如将
+          PyTorch 模型转换为 ONNX 格式，从而可以在其他框架中运行。 TorchScript 是 PyTorch 提供的一种将模型序列化以便在其他环境中运行的机制。它将
+          PyTorch 模型编译成一种中间表示形式，可以在没有 Python 解释器的环境中运行。这使得模型可以在 C++ 等其他语言中运行，也可以在嵌入式设备等资源受限的环境中实现高效的推理。</p>
+        <p>TorchScript 的特性和用途：</p>
+        <ol>
+          <li>静态图表示形式：TorchScript 是一种静态图表示形式，它在模型构建阶段对计算图进行编译和优化，而不是在运行时动态构建。这可以提高模型的执行效率。</li>
+          <li>模型导出：TorchScript 允许将 PyTorch 模型导出到一个独立的文件中，然后可以在没有 Python 环境的设备上运行。</li>
+          <li>跨平台部署：TorchScript 允许在不同的深度学习框架之间进行模型转换，例如将 PyTorch 模型转换为 ONNX 格式，从而可以在其他框架中运行。</li>
+          <li>模型优化和量化：通过 TorchScript，你可以使用各种技术（如量化）对模型进行优化，从而减小模型的内存占用和计算资源消耗。</li>
+          <li>融合和集成：TorchScript 可以帮助你将多个模型整合到一个整体流程中，从而提高系统的整体性能。</li>
+          <li>嵌入式设备：对于资源受限的嵌入式设备，TorchScript 可以帮助你优化模型以适应这些环境。</li>
+        </ol>
+        <p>为什么要用script模式呢？</p>
+        <ol>
+          <li>可以脱离python GIL以及python runtime的限制来运行模型，比如通过LibTorch通过C++来运行模型。这样方便了模型部署，例如可以在IoT等平台上运行。例如这个tutorial，使用C++来运行pytorch的model。</li>
+          <li>PyTorch JIT是用于pytorch的优化的JIT编译器，它使用运行时信息来优化 TorchScript modules，可以自动进行层融合、量化、稀疏化等优化。因此，相比pytorch
+            model，TorchScript的性能会更高。</li>
+        </ol>
+        
+<h3>使用</h3>
+
+<pre><code>import torch
+
+# 假设已经存在模型model
+# 创建模型输入tensor
+input_tensor = torch.rand(1, 3, 640, 640)
+jit_model = torch.jit.trace(model, input_tensor)
+torch.jit.save(jit_model, "model.pt")
+</code></pre>
+
+        
+<h2>9.ONNX模型转换及优化</h2>
+
+        
+<h3>转换</h3>
+
+<pre><code>import torch
+
+# 假设已经存在模型model
+# 创建模型输入tensor
+input_tensor = torch.rand(1, 3, 640, 640)
+input_names = ["input"]
+output_names = ["output"]
+# 设置动态shape
+dynamic_axes = {'input': {0: 'batch_size'}, 
+                'output': {0: 'batch_size'}}
+onnx_model = "model.onnx"
+torch.onnx.export(model, input_tensor, 'model.onnx', input_names=input_names, output_names=output_names, dynamic_axes=dynamic_axes, opset_version=13)
+</code></pre>
+
+        <p>当模型较大时，需要进行一定优化，如stable diffusers中的unet模型</p>
+        
+<h3>优化</h3>
+
+<pre><code>import onnx
+import onnx_graphsurgeon as gs
+import torch
+from onnx import shape_inference
+from polygraphy.backend.onnx.loader import fold_constants
+from torch.onnx import export
+
+class Optimizer:
+    def __init__(self, onnx_graph, verbose=False):
+        self.graph = gs.import_onnx(onnx_graph)
+        self.verbose = verbose
+
+    def info(self, prefix):
+        if self.verbose:
+            print(
+                f"{prefix} .. {len(self.graph.nodes)} nodes, {len(self.graph.tensors().keys())} tensors, {len(self.graph.inputs)} inputs, {len(self.graph.outputs)} outputs"
+            )
+
+    def cleanup(self, return_onnx=False):
+        self.graph.cleanup().toposort()
+        if return_onnx:
+            return gs.export_onnx(self.graph)
+
+    def select_outputs(self, keep, names=None):
+        self.graph.outputs = [self.graph.outputs[o] for o in keep]
+        if names:
+            for i, name in enumerate(names):
+                self.graph.outputs[i].name = name
+
+    def fold_constants(self, return_onnx=False):
+        onnx_graph = fold_constants(gs.export_onnx(self.graph), allow_onnxruntime_shape_inference=True)
+        self.graph = gs.import_onnx(onnx_graph)
+        if return_onnx:
+            return onnx_graph
+
+    def infer_shapes(self, return_onnx=False):
+        onnx_graph = gs.export_onnx(self.graph)
+        if onnx_graph.ByteSize() &gt; 2147483648:
+            raise TypeError("ERROR: model size exceeds supported 2GB limit")
+        else:
+            onnx_graph = shape_inference.infer_shapes(onnx_graph)
+
+        self.graph = gs.import_onnx(onnx_graph)
+        if return_onnx:
+            return onnx_graph
+
+def optimize(onnx_graph, name, verbose):
+    opt = Optimizer(onnx_graph, verbose=verbose)
+    opt.info(name + ": original")
+    opt.cleanup()
+    opt.info(name + ": cleanup")
+    opt.fold_constants()
+    opt.info(name + ": fold constants")
+    opt.infer_shapes()
+    opt.info(name + ': shape inference')
+    onnx_opt_graph = opt.cleanup(return_onnx=True)
+    opt.info(name + ": finished")
+    return onnx_opt_graph
+
+model_path = "model.onnx"
+shape_inference.infer_shapes_path(model_path, model_path)
+model_opt_graph = optimize(onnx.load(model_path), name="model", verbose=True)
+</code></pre>
+
+        
+<h2>10.onnxsim的介绍</h2>
+
+        
+<h3>简介</h3>
+
+        <p>ONNX-Simplifier（简称onnxsim）是一个开源工具，用于简化ONNX（Open Neural Network Exchange）模型。它通过合并模型中的冗余节点和优化操作来减少模型的大小和复杂性，从而提高模型的执行效率。这个工具是由华为诺亚方舟实验室开发的，并且是作为Python包发布的。</p>
+        <p>onnxsim的主要功能包括：</p>
+        <ol>
+          <li>节点融合：将多个操作融合为一个操作，减少节点数量，从而减少模型的大小和提高推理速度。</li>
+          <li>冗余操作消除：移除模型中的冗余操作，如恒等操作或对结果没有影响的操作。</li>
+          <li>常数折叠：在模型中直接计算可导出为常数的表达式，减少推理时的计算量。</li>
+          <li>优化形状和类型：优化模型中的张量形状和类型，以减少内存使用和提高效率。</li>
+        </ol>
+        
+<h3>使用</h3>
+
+<pre><code>import onnx
+from onnxsim import simplify
+
+# 加载ONNX模型
+model_path = 'model.onnx'
+onnx_model = onnx.load(model_path)
+# 简化模型
+model_simplified, check = simplify(onnx_model)
+# 检查简化是否成功
+assert check, "Simplified ONNX model could not be validated"
+# 保存简化后的模型
+onnx.save(model_simplified, 'path/to/simplified/model.onnx')
+</code></pre>
+
+        <p>命令行使用</p>
+<pre><code>python -m onnxsim model.onnx model_sim.onnx
+</code></pre>
+
+        
+<h2>11.TensorRT模型转换</h2>
+
+        <p>假设已经存在onnx模型</p>
+<pre><code>import sys
+import tensorrt as trt
+
+def convert_models(onnx_path: str, output_path: str, fp16: bool = False):
+
+    # 初始化配置
+    TRT_LOGGER = trt.Logger(trt.Logger.VERBOSE)
+    TRT_BUILDER = trt.Builder(TRT_LOGGER)
+    TRT_RUNTIME = trt.Runtime(TRT_LOGGER)
+    # 创建一个网络定义，并设置EXPLICIT_BATCH标志以支持批处理大小。
+    network = TRT_BUILDER.create_network(
+        1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+    onnx_parser = trt.OnnxParser(network, TRT_LOGGER)
+    print("onnx_path: ", onnx_path)
+    parse_success = onnx_parser.parse_from_file(onnx_path)
+    for idx in range(onnx_parser.num_errors):
+        print(onnx_parser.get_error(idx))
+    if not parse_success:
+        sys.exit("ONNX model parsing failed")
+    print("Load Onnx model done")
+
+    # 获取网络的输入和输出信息
+    inputs = [network.get_input(i) for i in range(network.num_inputs)]
+    outputs = [network.get_output(i) for i in range(network.num_outputs)]
+    for inp in inputs:
+        print(f'input "{inp.name}" with shape{inp.shape} {inp.dtype}')
+    for out in outputs:
+        print(f'output "{out.name}" with shape{out.shape} {out.dtype}')
+    # 创建一个优化配置文件profile，并设置输入节点的动态形状范围。
+    profile = TRT_BUILDER.create_optimization_profile()
+
+    profile.set_shape("input", (1, 3, 224, 224), (1, 3, 640, 640), (1, 3, 640, 640))
+    
+    # 创建一个构建器配置config，并将优化配置文件添加到其中。如果需要，还可以设置FP16精度模式。
+    config = TRT_BUILDER.create_builder_config()
+    config.add_optimization_profile(profile)
+    config.set_preview_feature(trt.PreviewFeature.DISABLE_EXTERNAL_TACTIC_SOURCES_FOR_CORE_0805, True)
+    if fp16:
+        config.set_flag(trt.BuilderFlag.FP16)
+
+    # 构建TensorRT engine，并将其序列化
+    plan = TRT_BUILDER.build_serialized_network(network, config)
+    if plan is None:
+        sys.exit("Failed building engine")
+    print("Succeeded building engine")
+    # 反序列化engine，并保存
+    engine = TRT_RUNTIME.deserialize_cuda_engine(plan)
+
+    # save TRT engine
+    with open(output_path, "wb") as f:
+        f.write(engine.serialize())
+
+if __name__ == "__main__":
+    onnx_path = "model.onnx"
+    output_path = "model.plan"
+    fp16 = True
+    convert_models(onnx_path, output_path, fp16)
+</code></pre>
+
+        
+<h2>12.现有的一些移动端开源框架？</h2>
+
+        <ol>
+          <li>NCNN，其GitHub地址：<a href="https://github.com/Tencent/ncnn">https://github.com/Tencent/ncnn</a>
+          </li>
+          <li>Paddle Lite，其GitHub地址：<a href="https://github.com/PaddlePaddle/paddle-mobile">https://github.com/PaddlePaddle/paddle-mobile</a>
+          </li>
+          <li>MACE（ Mobile AI Compute Engine），其GitHub地址：<a href="https://github.com/XiaoMi/mace">https://github.com/XiaoMi/mace</a>
+          </li>
+          <li>TensorFlow Lite，其官网地址：<a href="https://www.tensorflow.org/lite?hl=zh-cn">https://www.tensorflow.org/lite?hl=zh-cn</a>
+          </li>
+          <li>PocketFlow，其GitHub地址：<a href="https://github.com/Tencent/PocketFlow">https://github.com/Tencent/PocketFlow</a>
+          </li>
+          <li>等等。。。</li>
+        </ol>
+        
+<h2>13.介绍一下torch、torchvision、CUDA、cuDNN之间的关系</h2>
+
+        <p><strong>Torch</strong>、<strong>Torchvision</strong>、<strong>CUDA</strong> 和 <strong>cuDNN</strong> 是在AI领域研发中紧密相关的组件。它们共同作用，尤其是在 <strong>PyTorch</strong> 生态系统中，用于加速神经网络模型的开发与训练。下面是它们之间的详细关系解释：</p>
+        
+<h3>1. <strong>PyTorch（Torch）</strong></h3>
+
+        <ul>
+          <li><strong>PyTorch</strong> 是一个开源的深度学习框架，简化了神经网络的构建、训练和推理过程。<strong>Torch</strong> 是
+            PyTorch 的核心模块，它提供了张量操作（类似于 NumPy，但支持 GPU 加速）、自动微分和神经网络模块。</li>
+          <li>PyTorch 支持自动梯度计算，允许在 GPU 上快速进行张量操作和模型训练，这正是通过 CUDA 和 cuDNN 的支持来实现 GPU
+            加速。</li>
+        </ul>
+        
+<h3>2. <strong>Torchvision</strong></h3>
+
+        <ul>
+          <li><strong>Torchvision</strong> 是 PyTorch 的官方扩展库，专门用于计算机视觉领域。它包含：
+            <ul>
+              <li><strong>数据集加载器</strong>：如 CIFAR-10、ImageNet 等常见的数据集。</li>
+              <li><strong>预训练模型</strong>：如 ResNet、VGG 等常用的卷积神经网络（CNN），可以直接加载并使用，适合迁移学习。</li>
+              <li><strong>图像处理工具</strong>：包括图像的增广（如裁剪、翻转、旋转等），便于在训练过程中进行数据增强。</li>
+            </ul>
+          </li>
+          <li><strong>Torchvision</strong> 和 PyTorch 一起使用时，数据加载、图像处理和模型定义的操作可以无缝结合。而
+            GPU 加速依赖于 PyTorch 内部的 CUDA 调用。</li>
+        </ul>
+        
+<h3>3. <strong>CUDA</strong></h3>
+
+        <ul>
+          <li><strong>CUDA</strong>（Compute Unified Device Architecture）是由 NVIDIA 提供的并行计算平台和
+            API，它使得开发者可以通过编程，利用 <strong>NVIDIA GPU</strong> 来加速计算密集型任务，特别是在神经网络训练中。</li>
+          <li>在 <strong>PyTorch</strong> 中，CUDA 提供了 GPU 运算的基础支持。通过 CUDA，PyTorch 可以在 GPU
+            上进行张量操作、反向传播和其他矩阵运算，从而大大加快神经网络的训练速度。</li>
+          <li>PyTorch 中通过 <code>tensor.cuda()</code> 或 <code>.to('cuda')</code> 的方式，可以将模型或者张量转移到
+            GPU 上执行。所有张量运算将利用 CUDA 实现，显著提高性能。</li>
+        </ul>
+        
+<h3>4. <strong>cuDNN</strong></h3>
+
+        <ul>
+          <li><strong>cuDNN</strong>（CUDA Deep Neural Network Library）是 NVIDIA 提供的一个用于加速深度神经网络的
+            GPU 加速库。它专为神经网络中的常见操作进行了高度优化，特别是卷积运算、池化、归一化和激活函数。</li>
+          <li><strong>cuDNN 的作用</strong>：在训练深度学习模型时，卷积神经网络的核心操作是卷积，这些操作需要大量的矩阵运算，而 cuDNN
+            可以大幅优化这些运算的效率。PyTorch 使用 cuDNN 来加速这些关键操作，使得卷积层等计算密集的部分可以快速运行。</li>
+          <li><strong>cuDNN 与 CUDA 的区别</strong>：CUDA 是一个更通用的 GPU 编程框架，而 cuDNN 是专门为深度学习设计的高效库，依赖
+            CUDA 进行低级 GPU 操作。CUDA 提供了基本的并行计算支持，cuDNN 则在这个基础上进一步优化了深度学习相关的运算。</li>
+        </ul>
+        
+<h3>四者之间的关系：</h3>
+
+        <ol>
+          <li><strong>PyTorch（Torch）</strong>：是深度学习框架，负责张量计算、自动微分和神经网络构建。它是最顶层的框架，使用
+            CUDA 和 cuDNN 来加速深度学习任务。</li>
+          <li><strong>Torchvision</strong>：是 PyTorch 的扩展库，专注于计算机视觉，提供了预处理工具、预训练模型和常见数据集。它与
+            PyTorch 紧密集成，所有操作可以在 PyTorch 的基础上执行，并且同样可以通过 CUDA 和 cuDNN 加速。</li>
+          <li><strong>CUDA</strong>：用于 GPU 加速，提供了并行计算的能力。PyTorch 通过 CUDA 来实现 GPU 上的张量运算、反向传播等操作。</li>
+          <li><strong>cuDNN</strong>：专为深度学习设计的高效加速库，针对卷积、池化等操作进行高度优化。PyTorch 使用 cuDNN
+            来优化卷积网络中的计算。</li>
+        </ol>
+        
+<h3>形象理解：</h3>
+
+        <ul>
+          <li><strong>PyTorch</strong> 就像是汽车的发动机，负责处理所有的操作（如张量运算、自动微分等），它为深度学习提供了基础的功能。</li>
+          <li><strong>Torchvision</strong> 是给汽车加上的额外组件，如汽车的 GPS、音响系统，它专门用于计算机视觉任务，提供了常用的图像处理工具和模型。</li>
+          <li><strong>CUDA</strong> 是汽车的动力系统（类似汽车的燃油系统），它给 PyTorch 提供了加速的能力，使得计算可以在 GPU
+            上高效运行。</li>
+          <li><strong>cuDNN</strong> 是汽车的涡轮增压器，特别针对深度学习任务进行优化，进一步提升了计算速度。</li>
+        </ul>
+        
+<h3>实际应用中的协同工作：</h3>
+
+        <p>假设你正在训练一个图像分类的卷积神经网络（CNN）模型，你的典型流程可能如下：</p>
+        <ol>
+          <li>使用 <strong>Torchvision</strong> 从 <code>CIFAR-10</code> 数据集中加载训练数据，并对图像进行预处理。</li>
+          <li>构建一个卷积神经网络模型（例如 ResNet），使用 <strong>PyTorch</strong> 来定义模型结构。</li>
+          <li>使用 <strong>CUDA</strong> 将模型和训练数据转移到 GPU 上，通过并行计算加速训练。</li>
+          <li>在训练过程中，模型中的卷积操作由 <strong>cuDNN</strong> 提供优化，使得卷积层的前向传播和反向传播都能快速进行。</li>
+        </ol>
+        
+<h3>示例代码</h3>
+
+<pre><code class="language-python">import torch
+import torchvision
+import torchvision.transforms as transforms
+import torch.nn as nn
+import torch.optim as optim
+
+# 使用 Torchvision 加载 CIFAR-10 数据集
+transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
+
+# 构建一个简单的卷积神经网络
+class SimpleCNN(nn.Module):
+    def __init__(self):
+        super(SimpleCNN, self).__init__()
+        self.conv1 = nn.Conv2d(3, 16, 3)  # 卷积层
+        self.pool = nn.MaxPool2d(2, 2)    # 池化层
+        self.fc1 = nn.Linear(16 * 6 * 6, 10)  # 全连接层
+
+    def forward(self, x):
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = x.view(-1, 16 * 6 * 6)
+        x = self.fc1(x)
+        return x
+
+# 使用 CUDA 将模型移到 GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+net = SimpleCNN().to(device)
+
+# 定义损失函数和优化器
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+
+# 训练模型
+for epoch in range(2):  # 多次循环遍历数据集
+    running_loss = 0.0
+    for inputs, labels in trainloader:
+        inputs, labels = inputs.to(device), labels.to(device)  # 将数据转移到 GPU
+
+        optimizer.zero_grad()
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()  # 反向传播
+        optimizer.step()  # 优化
+
+        running_loss += loss.item()
+    print(f"Epoch {epoch + 1}, Loss: {running_loss / len(trainloader)}")
+</code></pre>
+
+        
+<h2>14.如何将ONNX模型从GPU切换到CPU中进行缓存？</h2>
+
+        <p>在AI行业中，在算法服务推理运行结束后，将ONNX模型从GPU切换到CPU中进行缓存，是经典的高性能算法服务的一环。 <strong>ONNX Runtime</strong> 中，可以很方便地将模型从 <strong>GPU</strong> 切换到 <strong>CPU</strong> 上。通过
+          ONNX Runtime 提供的 <code>providers</code> 参数或 <code>set_providers</code> 方法，可以方便地在
+          GPU 和 CPU 之间切换模型的运行设备。只需指定 <code>"CPUExecutionProvider"</code> 就可以让模型在 CPU
+          上进行缓存。</p>
+        
+<h3>方法一：在创建 <code>InferenceSession</code> 时指定 <code>CPUExecutionProvider</code></h3>
+
+        <p>ONNX Runtime 的 <code>InferenceSession</code> 支持多个计算提供者（Execution Providers），可以通过指定提供者将模型从
+          GPU 切换到 CPU。只需要在创建 <code>InferenceSession</code> 时将 <code>providers</code> 参数设置为 <code>["CPUExecutionProvider"]</code>，就会强制模型在
+          CPU 上运行。</p>
+<pre><code class="language-python">import onnxruntime as ort
+
+# 指定使用 CPU 运行
+session = ort.InferenceSession("model.onnx", providers=["CPUExecutionProvider"])
+</code></pre>
+
+        <p>如果之前在使用 GPU（如 <code>"CUDAExecutionProvider"</code>）运行模型，将 <code>providers</code> 参数改为 <code>"CPUExecutionProvider"</code> 就可以切换到
+          CPU 上。</p>
+        
+<h3>方法二：通过 <code>set_providers</code> 方法动态切换到 CPU</h3>
+
+        <p>如果已经创建了使用 GPU 的 <code>InferenceSession</code>，可以通过 <code>set_providers</code> 方法动态切换到
+          CPU 而不重新加载模型。</p>
+<pre><code class="language-python"># 假设已有一个使用 GPU 的 session
+session.set_providers(["CPUExecutionProvider"])
+</code></pre>
+
+        <p>这样可以在同一个 <code>InferenceSession</code> 上切换到 CPU。</p>
+        
+<h3>方法三：通过 <code>providers</code> 属性检查当前的计算提供者</h3>
+
+        <p>可以使用 <code>session.get_providers()</code> 来查看当前可用的计算提供者，并确认是否成功切换到 CPU。</p>
+<pre><code class="language-python">print(session.get_providers())  # 输出当前会话使用的提供者
+</code></pre>
+
+        <p>如果输出包含 <code>"CPUExecutionProvider"</code>，则表示会话已经在 CPU 上运行。</p>
+        
+<h3>示例：完整流程</h3>
+
+<pre><code class="language-python">import onnxruntime as ort
+
+# 创建一个使用 GPU 的 session
+session = ort.InferenceSession("model.onnx", providers=["CUDAExecutionProvider"])
+
+# 进行推理
+outputs = session.run(None, {"input_name": input_data})
+
+# 切换到 CPU
+session.set_providers(["CPUExecutionProvider"])
+
+# 确认提供者已切换到 CPU
+print("Current providers:", session.get_providers())
+</code></pre>
+
+        
+<h2>15.有哪些常见的AI模型分布式训练方式？</h2>
+
+        <p>在AI行业中，不管是AIGC、传统深度学习还是自动驾驶领域，分布式训练都是非常有价值的一种将模型训练任务分配到多个计算节点上，以加速训练过程的方法。分布式训练的主要方式包括 <strong>数据并行（Data Parallelism）</strong>、<strong>模型并行（Model Parallelism）</strong>、<strong>混合并行（Hybrid Parallelism）</strong> 和 <strong>流水线并行（Pipeline Parallelism）</strong> 等。</p>
+        
+<h3>1. 数据并行（Data Parallelism）</h3>
+
+        <p><strong>数据并行</strong> 是分布式训练中最常用的方法。数据并行的核心思想是将训练数据分成多个部分，分别交给多个计算设备（如
+          GPU）进行训练。每个设备独立计算梯度，最后在所有设备之间汇总梯度并更新模型参数。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>数据划分</strong>：训练数据被划分成若干批次，每个设备（如 GPU）负责一个数据子集。</li>
+          <li><strong>并行计算</strong>：每个设备使用相同的模型副本对其分配的数据进行前向和后向传播，独立计算梯度。</li>
+          <li><strong>梯度汇总与更新</strong>：每轮训练后，所有设备上的梯度通过同步或异步方式汇总，并将平均后的梯度应用于全局模型参数的更新。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>高效</strong>：适合具有大量数据的任务，可以充分利用硬件资源。</li>
+          <li><strong>易实现</strong>：大多数深度学习框架（如 TensorFlow、PyTorch）都提供了数据并行的自动支持。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>通信开销</strong>：在每次更新模型参数时，设备间需要交换梯度信息，导致通信开销较大，尤其是在多个设备间传输数据时。</li>
+          <li><strong>GPU显存限制</strong>：模型副本需要在每个设备上加载一份，如果模型非常大，会占用大量显存资源。</li>
+        </ul>
+        
+<h3>2. 模型并行（Model Parallelism）</h3>
+
+        <p><strong>模型并行</strong> 的核心思想是将模型切分成多个部分，并将这些部分分布在不同设备上训练。模型并行适合处理那些单个 GPU
+          显存不足以容纳的超大模型。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>模型切分</strong>：将模型分割成不同的模块或层次，比如将前一部分放在一个设备上，后一部分放在另一个设备上。</li>
+          <li><strong>逐层处理</strong>：每个设备只负责计算其所分配的模型部分的前向和后向传播。前向传播的输出会被传递到下一个设备。</li>
+          <li><strong>梯度计算</strong>：在反向传播时，梯度从模型的最后一层往前传播，各设备负责其分配到的模型层梯度计算。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>适合超大模型</strong>：对于无法在单个设备上加载的模型，可以通过模型分割跨多个设备。</li>
+          <li><strong>减少内存开销</strong>：每个设备仅需存储模型的一个部分，内存占用更少。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>同步开销</strong>：设备之间需要频繁交换前向和后向传播的中间结果，这增加了通信成本。</li>
+          <li><strong>较难实现</strong>：需要根据模型结构手动切分，且同步管理复杂。</li>
+        </ul>
+        
+<h3>3. 混合并行（Hybrid Parallelism）</h3>
+
+        <p><strong>混合并行</strong> 结合了数据并行和模型并行的优点，适合超大规模模型或特别复杂的模型训练。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>模型切分</strong>：先通过模型并行将模型切分成不同的模块，分配到多个设备上。</li>
+          <li><strong>数据并行</strong>：然后在每个模型部分上再应用数据并行，每个设备处理不同的数据批次。</li>
+          <li><strong>同步与更新</strong>：每个模型部分的计算结果进行汇总，汇总后再更新模型参数。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>适合超大模型和数据集</strong>：可以处理数据量和模型参数量都很大的任务。</li>
+          <li><strong>最大化资源利用率</strong>：同时利用数据并行的效率和模型并行的内存优势。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>复杂性</strong>：混合并行的实现难度较高，特别是需要在数据并行和模型并行之间合理协调。</li>
+          <li><strong>通信开销较大</strong>：通信需求复杂，可能导致延迟。</li>
+        </ul>
+        
+<h3>4. 流水线并行（Pipeline Parallelism）</h3>
+
+        <p><strong>流水线并行</strong> 是一种将模型的不同部分分配到不同设备上并分阶段执行的策略。流水线并行通常结合模型并行，将模型按层或模块切分为不同的“段”，并依次执行不同阶段的前向和后向传播。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>模型分段</strong>：将模型按顺序分成不同的段（如多个层或模块），每个段放在不同的设备上。</li>
+          <li><strong>流水执行</strong>：每个设备按照流水线的方式接收上一个设备的输出并进行前向计算，完成计算后传给下一个设备。</li>
+          <li><strong>梯度回传</strong>：在反向传播时同样分段依次回传梯度，直到最初的设备。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>适合超大模型</strong>：流水线分段可降低单设备的计算压力。</li>
+          <li><strong>高效利用计算资源</strong>：可减少设备的空闲时间，实现更高效的训练。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>复杂性</strong>：模型切分和流水线管理较为复杂。</li>
+          <li><strong>延迟</strong>：由于模型切分和数据依次传递，可能导致训练延迟，尤其是批处理数据较小时效果不佳。</li>
+        </ul>
+        
+<h3>5. 参数服务器（Parameter Server）架构</h3>
+
+        <p><strong>参数服务器架构</strong> 是一种较为传统的分布式训练架构，通常与数据并行结合使用。参数服务器在分布式系统中充当中央节点，负责存储和更新模型参数，而其他计算节点（工作节点）进行前向和后向传播，并在训练中定期与参数服务器同步参数。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>参数存储</strong>：模型参数存储在参数服务器中，各计算节点从参数服务器获取参数。</li>
+          <li><strong>梯度更新</strong>：每个计算节点计算本地梯度，将结果发送到参数服务器。</li>
+          <li><strong>参数同步</strong>：参数服务器将接收的梯度进行平均或聚合后，更新模型参数并广播给各计算节点。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>灵活性</strong>：参数服务器架构便于扩展，适合大规模分布式训练。</li>
+          <li><strong>支持异步更新</strong>：可以实现参数异步更新，减少同步时间，提高吞吐量。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>服务器压力大</strong>：参数服务器需要承载大量数据同步，容易成为性能瓶颈。</li>
+          <li><strong>参数一致性问题</strong>：异步更新可能导致不同计算节点参数不一致，影响模型的收敛。</li>
+        </ul>
+        
+<h3>6. 异步分布式训练（Asynchronous Distributed Training）</h3>
+
+        <p>在异步分布式训练中，各节点不必等待其他节点完成训练，而是独立进行计算并更新参数。这种方法通常与参数服务器结合使用，减少同步等待时间，提高计算效率。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>独立训练</strong>：各计算节点独立执行前向和后向传播，不等待其他节点完成。</li>
+          <li><strong>异步更新</strong>：各节点在完成训练后，将其梯度发送到参数服务器，服务器根据不同节点传回的梯度异步更新参数。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>高效</strong>：不需要同步等待，可以提高训练速度。</li>
+          <li><strong>适合异构环境</strong>：适合计算能力不同的设备。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>不一致性</strong>：异步更新容易造成参数不一致，可能导致收敛变慢或不稳定。</li>
+        </ul>
+        
+<h2>16.有哪些常见的AI模型分布式推理方式？</h2>
+
+        <p>在AI行业中，不管是AIGC、传统深度学习还是自动驾驶领域，都可以进行<strong>分布式推理</strong>，将模型的推理过程分散到多个计算节点，以满足对处理速度、吞吐量和资源使用效率的需求。</p>
+        
+<h3>1. 数据并行推理（Data Parallel Inference）</h3>
+
+        <p><strong>数据并行推理</strong> 是一种将输入数据分批分配到不同的设备上，每个设备独立加载模型并对其分配的数据进行推理的方式。这种方法在批量推理中非常高效，可以显著提高吞吐量。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>数据分批</strong>：将推理数据划分成若干批次，每个设备处理一个数据子集。</li>
+          <li><strong>独立推理</strong>：每个设备都加载完整的模型，并对其分配的数据子集进行推理。</li>
+          <li><strong>结果汇总</strong>：所有设备完成推理后，将结果汇总为完整的输出。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>高吞吐量</strong>：可以同时处理多个输入数据，适合批量推理。</li>
+          <li><strong>易实现</strong>：每个设备加载相同的模型副本，不需要复杂的模型切分。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>资源重复</strong>：每个设备都需要加载整个模型，会占用更多内存资源，尤其对于大型模型。</li>
+          <li><strong>通信开销</strong>：在多机推理时，设备之间的结果汇总会带来一定的通信延迟。</li>
+        </ul>
+        
+<h3>2. 模型并行推理（Model Parallel Inference）</h3>
+
+        <p><strong>模型并行推理</strong> 适用于单个设备内存不足以加载整个模型的情况。通过将模型切分成多个部分，分布到多个设备上，推理时各设备协同工作完成推理任务。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>模型切分</strong>：将模型按层或模块划分到不同的设备上，每个设备负责模型的一部分。</li>
+          <li><strong>逐层推理</strong>：输入数据通过各设备依次进行前向传播，逐层完成推理。</li>
+          <li><strong>结果收集</strong>：最后一部分的设备得到最终输出结果。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>适合超大模型</strong>：可以处理单个设备无法容纳的大模型，适合复杂的深度学习模型。</li>
+          <li><strong>减少内存使用</strong>：每个设备只需存储模型的一部分，降低了单个设备的内存负担。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>同步延迟</strong>：设备之间需要频繁传递中间结果，导致通信开销。</li>
+          <li><strong>实现复杂</strong>：需要根据模型结构手动划分和同步，管理复杂。</li>
+        </ul>
+        
+<h3>3. 混合并行推理（Hybrid Parallel Inference）</h3>
+
+        <p><strong>混合并行推理</strong> 是结合数据并行和模型并行的方式，以处理既有大数据量输入、又需要大模型计算的推理任务。通常用于超大规模推理任务。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>模型划分</strong>：使用模型并行将模型分成不同的部分，分布到多个设备上。</li>
+          <li><strong>数据并行</strong>：然后在模型每个部分上应用数据并行，以便不同设备可以处理数据批次。</li>
+          <li><strong>结果同步</strong>：设备之间通过数据并行和模型并行组合计算出结果，并汇总所有设备输出。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>高扩展性</strong>：适合大规模数据和大模型的场景，结合了数据和模型并行的优点。</li>
+          <li><strong>资源利用率高</strong>：同时利用了数据并行的吞吐量和模型并行的内存节省。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>实现难度高</strong>：需要管理数据和模型的多重并行，结构较为复杂。</li>
+          <li><strong>通信开销大</strong>：由于需要设备之间的多次同步和中间结果传递，延迟较高。</li>
+        </ul>
+        
+<h3>4. 流水线并行推理（Pipeline Parallel Inference）</h3>
+
+        <p><strong>流水线并行推理</strong> 是一种将模型切分为多个阶段，按流水线方式依次处理输入数据的推理方法，适合长时间推理任务或层级非常深的模型（如
+          Transformer）。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>模型分段</strong>：将模型按层分成多个阶段，每个阶段放在不同的设备上。</li>
+          <li><strong>分段推理</strong>：输入数据从第一阶段开始依次通过每个阶段的推理过程，最终得到输出结果。</li>
+          <li><strong>批量处理</strong>：不同输入数据可以依次进入流水线，使每个设备持续工作，减少等待时间。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>适合长推理任务</strong>：对于层级较深的模型，流水线并行可以显著减少推理延迟。</li>
+          <li><strong>高效利用资源</strong>：各设备不断处理输入数据，空闲时间少，资源利用率高。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>同步延迟</strong>：流水线方式在层与层之间需要同步传递数据，批量较小时效果有限。</li>
+          <li><strong>管理复杂</strong>：需要精细设计流水线结构，确保各设备处理时间接近，避免瓶颈。</li>
+        </ul>
+        
+<h3>5. 异构推理（Heterogeneous Inference）</h3>
+
+        <p><strong>异构推理</strong> 是利用不同种类的计算资源（如 CPU、GPU、TPU 等）同时执行模型的不同部分或任务。异构推理可最大化利用不同硬件的特点。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>任务划分</strong>：根据计算任务的特点，将模型的不同部分分配给合适的计算资源。例如，将计算密集的部分放在 GPU 上，逻辑控制部分放在
+            CPU 上。</li>
+          <li><strong>并行执行</strong>：各计算资源并行执行其分配的任务，并通过通信同步数据。</li>
+          <li><strong>结果汇总</strong>：最终汇总各设备的计算结果，得到完整推理输出。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>硬件高效利用</strong>：充分发挥不同设备的特点，提高整体推理速度。</li>
+          <li><strong>灵活性高</strong>：可以根据任务的不同特点优化资源分配，提高效率。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li><strong>通信开销</strong>：不同硬件设备之间的通信延迟较高。</li>
+          <li><strong>实现复杂性</strong>：需要考虑不同硬件设备的特性，分配和同步复杂。</li>
+        </ul>
+        
+<h3>6. 参数服务器推理（Parameter Server Inference）</h3>
+
+        <p><strong>参数服务器推理</strong> 模式适用于需要共享和同步模型参数的场景，尤其在分布式推理系统中较为常用。参数服务器充当中央节点，存储和管理模型参数，多个计算节点同时使用这些参数进行推理。</p>
+        
+<h4>工作流程</h4>
+
+        <ul>
+          <li><strong>参数存储</strong>：模型参数存储在参数服务器上，各计算节点从参数服务器获取参数。</li>
+          <li><strong>分布式推理</strong>：计算节点独立执行推理任务，使用参数服务器提供的共享参数。</li>
+          <li><strong>结果汇总</strong>：各节点计算完成后，将结果返回并汇总，获得完整推理结果。</li>
+        </ul>
+        
+<h4>优点</h4>
+
+        <ul>
+          <li><strong>高效共享参数</strong>：对于共享参数的推理任务，参数服务器提供了一个高效的解决方案。</li>
+          <li><strong>适合大规模推理</strong>：支持多个计算节点并行推理，适合大规模推理任务。</li>
+        </ul>
+        
+<h4>缺点</h4>
+
+        <ul>
+          <li>
+            <p><strong>通信瓶颈</strong>：参数服务器需要处理多个计算节点的同步请求，可能成为性能瓶颈。</p>
+          </li>
+          <li>
+            <p><strong>实现复杂性</strong>：需要协调各计算节点与参数服务器之间的同步和通信。</p>
+             <h2>17.LightLLm简单介绍</h2>
+          </li>
+        </ul>
+        
+<h3>简单介绍</h3>
+
+        <p>LightLLM 是一种轻量级 LLM 推理服务框架，LightLLM 引入了一种更细粒度的kvCache管理算法，称为TokenAttention，
+          并设计了一个与TokenAttention高效配合的Efficient Router调度算法。通过 TokenAttention 和 Efficient
+          Router 的配合，LightLLM在大多数场景下实现了比vLLM和Text Generation Inference更高的吞吐量，甚至在某些情况下性能提升了4倍左右。</p>
+        
+<h3>特点</h3>
+
+        <ul>
+          <li>
+            <p>三进程异步协作：分词、模型推理、去分词异步进行，GPU利用率大幅提升。</p>
+          </li>
+          <li>
+            <p>TokenAttention：实现token-wise的KV缓存内存管理机制，实现推理时内存零浪费。</p>
+          </li>
+          <li>
+            <p>Efficient Router：与Token Attention合作，精心管理每个Token的GPU内存，从而优化系统吞吐量。</p>
+          </li>
+        </ul>
+        <p>凭借基于OpenAI Triton开发的高度协调的高效内核和服务调度，LightLLM实现了优异的吞吐性能。</p>
+        <p>
+          <img src="api/images/RfvfJfbLJeyP/lightllm.png" alt="lightllm" />
+        </p>
+        
+<h3>组成</h3>
+
+        <p>lightllm 的设计核心是多进程协作，每个进程负责一个模块，通过zmq和rpc的方式进行多进程协同工作。 lightllm中包括以下的模块：</p>
+        <p><strong>Http Server</strong> ： 负责接收请求</p>
+        <ul>
+          <li>
+            <p>接收API请求</p>
+          </li>
+          <li>
+            <p>对于系统查询请求，跟 Metric Server 和 Health Server 协作获取相关信息</p>
+          </li>
+          <li>
+            <p>针对于纯文本请求，将文本 tokenized，包装成纯文本请求发送给 Router</p>
+          </li>
+          <li>
+            <p>针对于多模态请求，获取图片数据的md5码，使用md5码跟 Cache Manager Server 申请缓存，并将图片数据存到缓存上，将文本
+              tokenized，和多模态信息一起包装成多模态请求发送给 Visual Server</p>
+          </li>
+        </ul>
+        <p>
+          <img src="api/images/bxza0sktGzdt/http_server.png" alt="http_server" />
+        </p>
+        <p><strong>Router</strong> : 从 HttpServer 接收请求以后，主要负责保存请求，并且进行 请求调度</p>
+        <ul>
+          <li>
+            <p>接收 HttpServer 或者 Visual Server 发来的请求，并放到请求队列中。</p>
+          </li>
+          <li>
+            <p>决定当前轮次应该 prefill 还是 decode。</p>
+          </li>
+          <li>
+            <p>如果是 prefill 轮次， prefill 哪些请求。</p>
+          </li>
+          <li>
+            <p>如果是 decode 轮次， decode 哪些请求。
+              <img src="api/images/KIIhBq9isdUG/Router.png"
+              alt="Router" />
+            </p>
+          </li>
+        </ul>
+        <p><strong>Model Backend</strong> ：当 Router 决定好了使用哪些请求进行 prefill 或者 decode
+          以后， ModelBackend 决定如何处理这些请求。 lightllm\server\router\model_infer\mode_backend\base_backend.py
+          目录下的 ModeBackend 是所有 backend 的基类，通过了解其中的重要函数</p>
+        <ul>
+          <li>
+            <p>init_model : 通过模型文件解析使用 lightllm-new-docs\lightllm\models 的哪个模型类。</p>
+          </li>
+          <li>
+            <p>prefill_batch : 对一个批次数据进行 prefill。</p>
+          </li>
+          <li>
+            <p>decode_batch : 对一个批次数据进行 decode。 每个backend都有一个 model<code>代表一个独立的模型类, 以及一个 </code>tp_rank
+              代表一个设备，可以有若干个 backend。 其中的 model 类负责模型在设备中真正地计算， lightllm\common\basemodel\basemodel.py
+              中的 TpPartBaseModel 是所有模型类的基类，该类支持张量并行。
+              <img src="api/images/0flKEHVEmeDu/model_backend.png"
+              alt="model_backend" />
+            </p>
+          </li>
+        </ul>
+        <p><strong>Visual Server</strong> : 负责处理多模态请求
+<strong>Cache Manager Server</strong> ：负责管理多模态信息的推理结果的缓存</p>
+        <p>Visual Server 和 Cache Manager Server 都是专门为了支持多模态模型的推理而设计的。其中 Visual Server
+          负责 encode 多模态模型中的图片信息， 而 Cache Manager Server 负责缓存图片原始数据和图片 encode 后的特征数据，
+          该缓存存放在主机的共享内存上，意在减少多进程的重复内存读取以及避免图片数据重复 encode。</p>
+        <p>
+          <img src="api/images/rPJ3vfAPbB8N/Visual_Cache_Manager.png" alt="Visual_Cache_Manager"
+          />
+        </p>
+        <p><strong>Metric Server</strong> ：负责记录系统运行的性能指标</p>
+        <p><strong>Health Server</strong> ：负责监控系统运行的健康情况</p>
+        
+<h2>18.LightLLm之TokenAttention简单介绍</h2>
+
+        
+<h3>运行机制：</h3>
+
+        <p>模型初始化时，根据用户设置的 max_total_token_num 预先分配 KV 缓存，并创建 Token Table 来记录输入 token
+          的实际存储位置。</p>
+        <p>当处理新请求时，系统首先检查预分配的Token缓存中是否有可用的连续空间用于存储键值（KV）缓存。 TokenAttention 倾向于为请求分配连续的图形内存空间，以最大限度地减少推理过程中的内存访问。仅当连续空间不足时，才会为请求分配非连续显存。由于内存管理是逐个令牌进行的，因此
+          TokenAttention 几乎实现了零浪费，与 vllm 相比，产生了更高的吞吐量。</p>
+        <p>我们使用 OpenAI Triton 实现了一个高效的 TokenAttention 运算符。当提供查询向量时，该算子可以根据Token Table高效地检索相应的KV缓存并进行注意力计算。</p>
+        <p>请求完成后，可以通过删除令牌表上的记录来快速释放相应的显存，从而为调度新的请求让路。由于 TokenAttention 在模型初始化时预先分配了所有
+          KV 缓存空间，因此可以为已完成的请求高效释放内存，并在动态调度时合并不同批次的请求，从而有效最大化 GPU 利用率。</p>
+        
+<h3>具体步骤：</h3>
+
+        <ol>
+          <li>
+            <p>模型初始化时，系统根据用户设置的 max_total_token_num 预先申请 KV 缓存显存，并创建 Token Table 来记录输入
+              token 的实际存储位置。
+              <img src="api/images/7sPVCvrLZR0W/TokenAttention1.png" alt="TokenAttention1"
+              />
+            </p>
+          </li>
+          <li>
+            <p>当处理新请求时，系统首先检查预分配的Token缓存中是否有可用的连续空间用于存储KV Cache。 TokenAttention 倾向于为请求分配连续的内存，以最大限度地减少推理过程中的内存访问。仅当连续空间不足时，才会为请求分配非连续的内存。分配的空间记录在Token
+              Table中，用于后续的注意力计算。
+              <img src="api/images/f8h2I6fMZCRF/TokenAttention2.png"
+              alt="TokenAttention2" />
+            </p>
+          </li>
+          <li>
+            <p>对于新生成的Token的缓存，只需从预先分配的Token缓存中找到未使用的空间并将相应的条目添加到Token表中即可。此外，为了有效地分配和释放Cache，我们利用Torch
+              Tensor在GPU上的并行计算能力来管理预分配Token Cache的状态。首先，我们定义状态如下:</p>
+          </li>
+        </ol>
+<pre><code class="language-python">self.mem_state = torch.ones((size,), dtype=torch.bool, device="cuda")
+self._mem_cum_sum = torch.empty((size,), dtype=torch.int32, device="cuda")
+self.indexes = torch.arange(0, size, dtype=torch.long, device="cuda")
+self.can_use_mem_size = size
+</code></pre>
+
+        <p>mem_state 记录了缓存的使用状态，其中1代表未使用，0代表已使用。 _mem_cum_sum 用于 mem_state 的累积和，用于有效地识别和选择未使用的空间进行缓存分配。分配过程如下：</p>
+<pre><code class="language-python">torch.cumsum(self.mem_state, dim=0, dtype=torch.int32, out=self._mem_cum_sum)
+#
+select_index = torch.logical_and(self._mem_cum_sum &lt;= need_size, self.mem_state == 1)
+select_index = self.indexes[select_index]
+self.mem_state[select_index] = 0
+self.can_use_mem_size -= len(select_index)
+</code></pre>
+
+        <p>
+          <img src="api/images/DmpQUTugHBvd/TokenAttention3.png" alt="TokenAttention3"
+          />
+        </p>
+        <ol>
+          <li>请求完成后，可以通过删除 Token Table 上的记录来快速释放相应的显存，从而为调度新的请求让路。</li>
+        </ol>
+<pre><code class="language-python">self.can_use_mem_size += free_index.shape[0]
+self.mem_state[free_index] = 1
+</code></pre>
+
+        <p>
+          <img src="api/images/vDfUkxkP0ujY/TokenAttention4.png" alt="TokenAttention4"
+          />
+        </p>
+        <ol>
+          <li>由于Token级别的 GPU 内存管理，TokenAttention 可以实现 GPU 内存的零浪费。它可以准确地计算出系统可以容纳多少新Token进行计算。因此，当结合
+            Efficient Router 来管理请求时，它可以在推理过程中不断添加新的请求，充分利用每一块GPU内存，最大化GPU利用率。
+            <img src="api/images/KAx0MUjaxXMo/TokenAttention5.png"
+            alt="TokenAttention5" />
+          </li>
+        </ol>
+        
+<h2>19.LightLLm之Efficient Router简单介绍</h2>
+
+        
+<h3>Efficient Router</h3>
+
+        <p>引入高效路由器来管理传入请求，并动态确定该请求是否可以与已运行的推理批次融合。 合并标准是估计合并推理过程中最大Token占用量是否小于硬件可容纳的最大容量。
+          这里，我们将这个最大容量设置为 max_total_token_num。在 Token Attention 的支持下，我们可以准确地管理Token的使用情况，并且可以确保永远不会出现内存不足（out-of-memory）的情况。</p>
+        <p>
+          <img src="api/images/WHoZKyWUaR9y/Efficient_Router.png" alt="Efficient Router"
+          />
+        </p>
+        <p>如上图所示，每一行代表一个请求当前的运行状态，黄色代表已经运行过的历史kv缓存token，每个格子代表一个token，灰色代表要生成的token。
+          生成的Token数量由每个请求设置的最大输出长度和已生成的Token数量决定。 上图中，绿色网格的第二行表示新到达的请求，图中按照要生成的输出的长度升序列出了所有请求。</p>
+        <p>如果我们假设新的请求融合成一个Batch进行推理，那么最大的token使用量必然会出现在时间点1、时间2、时间3中的一个时间点，我们只需要计算这些时间点的token使用量是否达到最大值即可。三个时间点都没有超过max_total_token_num，说明新的请求可以加入到Batch中进行融合推理。</p>
+        <p>时间1的总使用代币等于黄色单元格数量加上绿色单元格数量（见下图）
+          <img src="api/images/TvHHRt0rFFpu/Efficient_Router2.png"
+          alt="Efficient_Router2" />
+        </p>
+        <p>时间2的总使用代币等于黄色方块的数量加上绿色方块的数量（见下图）
+          <img src="api/images/S5tphQ1ci0FQ/Efficient_Router3.png"
+          alt="Efficient_Router3" />
+        </p>
+        <p>时间3的总使用代币等于黄色方块的数量（见下图）
+          <img src="api/images/xDIdPOtYWgH3/Efficient_Router4.png"
+          alt="Efficient_Router4" />
+        </p>
+        <p>实际最大令牌使用量始终为时间 1、时间 2 或时间 3 之一。</p>
+        <p>只要动态推理过程中token的最大使用量低于max_total_token_num，就说明可以批量进行新的请求进行推理。 为了快速计算批次中所有请求所需的最大令牌使用量，我们使用
+          numpy 实现了一个高效的示例。</p>
+<pre><code class="language-python">import numpy as np
+
+def demo():
+    max_total_token_num = 100
+    req_list = [(5, 4), (4, 3), (5, 3), (3, 2), (4, 2)]  # (run_len, left_output_len)
+    req_list.sort(key=lambda x: -x[1])
+
+    left_out_len_array = np.array([e[1] for e in req_list])
+    has_run_len_array = np.array([e[0] for e in req_list])
+    cum_run_len_array = np.cumsum(has_run_len_array)
+    size_array = np.arange(1, len(req_list) + 1, 1)
+    need_max_token_num = (left_out_len_array * size_array + cum_run_len_array).max()
+
+    if need_max_token_num &lt;= max_total_token_num:
+        print("ok")
+    else:
+        print("oom")
+</code></pre>
+
+        
+<h2>20.如何构建TensorRT模型的缓存机制？</h2>
+
+        <p>在TensorRT架构中，模型运行主要依赖GPU，因此直接支持将整个TensorRT引擎从GPU移动到CPU并非直接内置的功能。但是我们可以通过一些技巧，将TensorRT引擎对象序列化到CPU（或者磁盘），并在需要时反序列化加载到GPU，可以有效管理显存，特别是在多模型推理或资源有限的场景下。这种方法实现了类似“缓存”的机制，能够动态加载模型到GPU，同时释放未使用的GPU资源，从而提高硬件资源的利用效率。</p>
+        
+<h3><strong>1. 基本思路</strong></h3>
+
+        <p>TensorRT模型（即引擎）在推理时需要加载到GPU中运行。如果需要将模型“缓存”到CPU，可以通过以下方法：</p>
+        <ol>
+          <li><strong>序列化引擎</strong>：
+            <ul>
+              <li>在推理完成后，将引擎序列化为二进制数据并存储在CPU内存中（甚至可以存储到磁盘）。</li>
+            </ul>
+          </li>
+          <li><strong>反序列化引擎</strong>：
+            <ul>
+              <li>在需要推理时，将二进制数据反序列化为TensorRT引擎，并加载到GPU中执行推理。</li>
+            </ul>
+          </li>
+        </ol>
+        <p>这种方法模拟了将模型缓存到CPU的过程，因为TensorRT本身无法直接在CPU上运行。</p>
+        
+<h3><strong>2. 实现步骤</strong></h3>
+
+        
+<h4><strong>1. 加载模型并创建TensorRT引擎</strong></h4>
+
+        <ul>
+          <li>首先我们加载ONNX模型或已有的TensorRT引擎，并创建可用于推理的引擎。</li>
+        </ul>
+<pre><code class="language-python">import tensorrt as trt
+
+# 加载 TensorRT Logger
+logger = trt.Logger(trt.Logger.WARNING)
+
+# 创建 TensorRT Builder 和 Network
+builder = trt.Builder(logger)
+network = builder.create_network(flags=1 &lt;&lt; int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+
+# 加载 ONNX 文件
+onnx_file = "model.onnx"
+with trt.OnnxParser(network, logger) as parser:
+    with open(onnx_file, 'rb') as f:
+        parser.parse(f.read())
+
+# 构建引擎
+config = builder.create_builder_config()
+config.max_workspace_size = 1 &lt;&lt; 30  # 设置最大工作空间
+engine = builder.build_engine(network, config)
+</code></pre>
+
+        
+<h4><strong>2. 将引擎序列化到CPU</strong></h4>
+
+        <ul>
+          <li>使用 TensorRT 的序列化功能，将引擎对象保存为二进制数据。</li>
+        </ul>
+<pre><code class="language-python"># 序列化引擎
+serialized_engine = engine.serialize()
+
+# 将序列化后的引擎保存到 CPU 内存（或者存储到文件）
+cached_engine_on_cpu = serialized_engine  # 模拟缓存到 CPU
+</code></pre>
+
+        
+<h4><strong>3. 在需要时重新加载引擎到 GPU</strong></h4>
+
+        <ul>
+          <li>使用 TensorRT 的反序列化功能，将缓存的引擎加载回 GPU。</li>
+        </ul>
+<pre><code class="language-python"># 反序列化引擎
+runtime = trt.Runtime(logger)
+engine_from_cpu = runtime.deserialize_cuda_engine(cached_engine_on_cpu)
+
+# 创建执行上下文
+context = engine_from_cpu.create_execution_context()
+</code></pre>
+
+        
+<h4><strong>4. 推理流程</strong></h4>
+
+        <ul>
+          <li>构造输入和输出张量，并执行推理。</li>
+        </ul>
+<pre><code class="language-python">import numpy as np
+import pycuda.driver as cuda
+import pycuda.autoinit  # 初始化 CUDA 上下文
+
+# 创建输入和输出缓冲区
+input_shape = (1, 3, 224, 224)  # 示例输入维度
+output_shape = (1, 1000)  # 示例输出维度
+
+# 在 GPU 上分配内存
+d_input = cuda.mem_alloc(np.prod(input_shape) * np.float32().nbytes)
+d_output = cuda.mem_alloc(np.prod(output_shape) * np.float32().nbytes)
+
+# 创建主机上的输入数据
+input_data = np.random.rand(*input_shape).astype(np.float32)
+cuda.memcpy_htod(d_input, input_data)
+
+# 执行推理
+bindings = [int(d_input), int(d_output)]
+context.execute_v2(bindings)
+
+# 从 GPU 拷贝结果到主机
+output_data = np.empty(output_shape, dtype=np.float32)
+cuda.memcpy_dtoh(output_data, d_output)
+
+print("Inference result:", output_data)
+</code></pre>
+
+        
+<h3><strong>3. 注意事项</strong></h3>
+
+        
+<h4><strong>1. 数据传输开销</strong></h4>
+
+        <ul>
+          <li>序列化和反序列化是额外的开销，因此在高频推理任务中可能导致性能下降。</li>
+          <li>如果模型较大，序列化和反序列化的时间会显著增加。</li>
+        </ul>
+        
+<h4><strong>2. GPU 资源管理</strong></h4>
+
+        <ul>
+          <li>每次加载引擎到 GPU 时，需要确保 GPU 上有足够的显存。</li>
+          <li>在释放 GPU 资源后，可以通过 <code>cuda.Context.synchronize()</code> 确保设备状态一致。</li>
+        </ul>
+        
+<h4><strong>3. 磁盘与内存存储选择</strong></h4>
+
+        <ul>
+          <li>如果缓存到 CPU 的模型较大，可以选择将其保存到磁盘（如 <code>.plan</code> 文件），并在需要时从磁盘加载。</li>
+        </ul>
+        
+<h4><strong>4. TensorRT 的版本兼容性</strong></h4>
+
+        <ul>
+          <li>序列化的引擎仅在相同的 TensorRT 版本、CUDA 版本和 GPU 硬件架构上兼容。如果环境变化，需要重新生成引擎。</li>
+        </ul>
+        
+<h2>21.vLLm架构介绍？</h2>
+
+        <p>
+          <img src="api/images/aBgA4vPqENup/vllm.png" alt="vllm架构" />
+        </p>
+        
+<h3>架构组成</h3>
+
+        <ol>
+          <li>Endpoints/Engine</li>
+        </ol>
+        <ul>
+          <li>Endpoints层是整个推理服务的入口，用于传入模型类型、推理参数、对于没一个request返回其output结果合集。 API Server是一个异步服务端，它会为每一个request关联一个output
+            stream，用来返回推理生成的结果。 LLM多数用在同步代码和测试代码当中，他是对下层引擎的封装，并将引用层传入的参数组成engine_arges,
+            提供给引擎。</li>
+          <li>Engine层推理服务的核心控制层，一方面他会创建Scheduler，并传入request规划好需要使用的KVCache，另一方面初始化模型执行器，并将KVCache和request灌入执行器，最后得到模型的执行器返回给用户。</li>
+        </ul>
+        <ol>
+          <li>Scheduler</li>
+        </ol>
+        <ul>
+          <li>
+            <p>作为PageAttention的核心调度层，首先会把request转换为SequenceGroup，这样当我们使用例如Bean Search这些并行token生成策略的时，这一个requst就会变成一组相关token序列，我们为每个序列生成目标token，并选取其中最符合当前策略的token作为下一轮输入和结果输出。</p>
+          </li>
+          <li>
+            <p>Scheduler维护了3个队列，其中waitting队列主要是用户刚刚输入到scheuler中的token序列；running队列是正在进行推理的token序列；swaped队列是当显存不足或者推理优先级降低时，从GPU中换出的token序列</p>
+          </li>
+          <li>
+            <p>BlockManager下属两个KVCache分配器: UncachedAllocator、CachedAllocator. UncachedAllocator是正常token的KVCache分配器,
+              通过block_table维护分配状态，CachedAllocator略有差别，主要添加了token前缀hash计算，会将相同前缀的KVCache直接复用起来，并引入了evcitor等概念，被清除的KVCache会先暂时根据LRU原则转移到evcitor中，如果短时间内又出现相同前缀的token，可以恢复他的前缀KVCache使用。</p>
+          </li>
+          <li>
+            <p>在Scheduler Output封装中，我们会将调度的KVCache和相关的sequence id传入给模型，这样就可以直接使用进行推理了。</p>
+          </li>
+        </ul>
+        <ol>
+          <li>
+            <p>Excutor 执行器主要是通过worker的一种封装，其中既有单卡单worker的封装形式，同时也有分布式集群的worker形式。</p>
+          </li>
+          <li>
+            <p>Worker 对应的每个Worker，不仅需要负责加载实际的模型，同时对需要对不同模型的推理逻辑进行捕获，使用CUDA Graph加速推理效率。
+              上文提到BlockManager会通过block_table规划好哪些物理Block需要使用，到了worker这一层就是对具体的物理内存进行操作。
+              以上动作都会直接和GPU或者其他计算平台打交道，因此还会封装一层Attention Backend, 屏蔽这些不同平台的差异细节。 最终我们可以获得模型的logits输出，通过我们的sample策略后，得出最终的Output,
+              返回给上一层。</p>
+          </li>
+          <li>
+            <p>Backend Backend这层主要关注于推理和模型层计算过程中需要用到的各种加速算法和技巧,最后通过OPS的粘结剂层将最终的数据GPU中，执行相关的kernel函数进行并行计算。</p>
+          </li>
+        </ol>
+        
+<h2>vLLm的推理服务与引擎介绍？</h2>
+
+        <p>引擎部分主要分为两部分:</p>
+        <p>入口: 主要分为同步和异步接口，会对输入的配置和数据进行转换成引擎args对引擎进行初始化。 引擎: 这个是顶层调度的核心模块，衔接scheduler和executor等下游核心模块。</p>
+        <p>
+          <img src="api/images/M41XEHrou6Re/vllm-engine.png" alt="vllm engine" />)</p>
+        <p>API-Server是用来对网络服务暴露的入口，主要使用了asyncio库进行了协程封装，提高了服务的并发处理能力。</p>
+        <ol>
+          <li>服务端的启动args使用create_engine_config方法转换为EngineConfig，然后通过AsyncLLMEngine.from_engine_args方法创建出带有异步接口的引擎类AsyncLLMEngine(LLMEngine)。EngineConfig包含DeviceConfig、ModelConfig、CacheConfig、ParallelConfig、SchdulerConfig</li>
+          <li>调用generate方法将传入的prompt传输上一步创建的AsyncEngine引擎</li>
+          <li>add_request这里会做两件事情:</li>
+        </ol>
+        <ul>
+          <li>start_background_loop: 开启协程主循环，监听新request事件并处理, 对应线条4。</li>
+          <li>将request_tracker作为当前request的response stream追踪, 并将request放入到追踪队列，对应线条3</li>
+        </ul>
+        <ol>
+          <li>engine_step是异步服务中较为核心的方法，主要会调用成员变量中的实际engine引擎，这个是个_AsyncLLEnginel类，对LLMEngine添加了一些异步封装方法。</li>
+        </ol>
+        <ul>
+          <li>首先会主动通过get_new_and_aborted_requests去tracker拿到相应的request(线条5)</li>
+          <li>然后调用add_request_async传入request请求(线条6、7), 这个不会调用模型中的tokenlizer做预处理和数据转换操作</li>
+          <li>随后获得token_ids后, 将token按照block分组，组成sequence，这个工程主要发生在内部函数_add_processed_request中，最后再讲sequence转换成seq_group数据结构，在prefill阶段，这里只有一条sequence。</li>
+          <li>最后会调用step_async，对request和此时生成的KVCache scheduler计划数据传给model(线条10、11)</li>
+          <li>模型的输出，会直接传入process_request_outputs中, 主要是把output放入到tracker中，最终关联上这个request的stream，返回给用户(线条13、14)</li>
+        </ul>
+        <p>LLM类是用于测试和同步调用时的封装，首先通过engine_args初始化LLMEgine，然后调用add_request接口，将prompt信息传入engine，此时engine会通过(路径8、9)来进行scheduler调度，最后12驱动模型，给出output。</p>
+        <ul>
+          <li>引擎是从from_engine_args方法入口创建的</li>
+          <li>add_request: 获取到的prompt，会经历tokenlize-&gt;sequence-&gt;sequence_group的数据处理操作，然后会作为参数传入add_seq_group</li>
+          <li>step/step_async方法是进行推理的核心方法，会首先通过scheduler对sequence group进行KVCache调度，拿到调度之后的metadata，同各种缓存和队列一起，传入给模型执行器，执行器返回推理结果。</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

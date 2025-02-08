@@ -1,0 +1,17 @@
+graph TD
+    A[任务类型] --> B{生成 or 理解?}
+    B -->|生成| C[Decoder-Only]
+    B -->|理解| D[Encoder-Only]
+    B -->|转换| E[Encoder-Decoder]
+    C --> F{是否需要长文本?}
+    F -->|是| G[稀疏注意力或SSM]
+    F -->|否| H[标准Decoder]
+    G --> I{显存限制?}
+    I -->|>24GB| J[Longformer/BigBird]
+    I -->|<16GB| K[Mamba/RetNet]
+    D --> L{是否需要多语言?}
+    L -->|是| M[XLM-R]
+    L -->|否| N[BERT]
+    E --> O{是否需要多任务?}
+    O -->|是| P[Flan-T5]
+    O -->|否| Q[原始T5]

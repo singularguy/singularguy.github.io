@@ -1,0 +1,39 @@
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../style.css">
+    <base target="_parent">
+    <title data-trilium-title>面试题随记</title>
+  </head>
+  
+  <body>
+    <div class="content">
+       <h1 data-trilium-h1>面试题随记</h1>
+
+      <div class="ck-content">
+        <p>&nbsp;</p>
+        <h2>1 . 为什么Self-Attention要通过线性变换计算Q K V，背后的原理或直观解释是什么？</h2>
+        <p><a href="https://www.zhihu.com/question/592626839/answer/67210626639">https://www.zhihu.com/question/592626839/answer/67210626639</a>
+        </p>
+        <p><a href="https://www.zhihu.com/question/592626839/answer/3304714001">https://www.zhihu.com/question/592626839/answer/3304714001</a>
+        </p>
+        <h2>2. 为什么不增加 transformer 模型的attention模块中的头的数量？</h2>
+        <p>
+          <img src="面试题随记_image.webp">
+        </p>
+        <p>Head 與 Top-1 Accurary 之間的關係 [1] Daniel Bolya, Cheng-Yang Fu, Xiaoliang
+          Dai, Peizhao Zhang, &amp; Judy Hoffman (2022). Hydra Attention: Efficient
+          Attention with Many Heads_. Eccv Workshops_.</p>
+        <p>深入浅出完整解析Transformer核心 四种视角解读为什么head不是越多越好</p>
+        <h2>3. 为什么transformer要用adam？</h2>
+        <p>CUHK-SZ一篇最近的文章解决了这个问题</p>
+        <p><a href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.16788">[2402.16788] Why Transformers Need Adam: A Hessian Perspective (arxiv.org)</a>
+        </p>
+        <p>大概就是每块的hessian不一样需要不一样的学习率，而adam的adaptivity刚好能满足这个要求</p>
+      </div>
+    </div>
+  </body>
+
+</html>

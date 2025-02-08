@@ -1,0 +1,176 @@
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../../style.css">
+    <base target="_parent">
+    <title data-trilium-title>3D数字人生成基础</title>
+  </head>
+  
+  <body>
+    <div class="content">
+       <h1 data-trilium-h1>3D数字人生成基础</h1>
+
+      <div class="ck-content">
+        <hr />
+        
+<h2>created: 2025-01-25T00:41
+updated: 2025-01-25T13:23</h2>
+
+        
+<h2>目录</h2>
+
+        
+<h2>第一章 3D数字人生成</h2>
+
+        <ul>
+          <li><a href="#1.3DMM">1.3DMM (3D Morphable Model)是什么?</a>
+          </li>
+          <li><a href="#2.3DMM%E6%9C%89%E4%BB%80%E4%B9%88%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8?">2.3DMM有什么实际应用?</a>
+          </li>
+          <li><a href="#3.%E7%9B%AE%E5%89%8D%E6%9C%89%E5%93%AA%E4%BA%9B%E5%BC%80%E6%BA%90%E7%9A%843D%E4%BA%BA%E8%84%B8%E9%87%8D%E5%BB%BA%E6%96%B9%E6%A1%88?">3.目前有哪些开源的3D人脸重建方案?</a>
+          </li>
+          <li><a href="#4.3D%E4%BA%BA%E8%84%B8%E9%87%8D%E5%BB%BA%E7%9A%84%E6%8A%80%E6%9C%AF%E9%9A%BE%E7%82%B9%E6%9C%89%E5%93%AA%E4%BA%9B?">4.3D人脸重建的技术难点有哪些?</a>
+          </li>
+          <li><a href="#5.FLAME%E5%92%8CBFM%E7%9A%84%E5%8C%BA%E5%88%AB">5.FLAME和BFM的区别</a>
+          </li>
+        </ul>
+        
+<h2>1. 3DMM (3D Morphable Model)是什么?</h2>
+3DMM是一种基于统计模型的三维人脸重建方法，最早由Blanz等人在1999年提出。该方法通过扫描大量人脸数据，构建出一个包含形状和纹理信息的三维人脸模型库。通过线性组合这些模型库中的基础模型，可以生成任意新的人脸模型。
+        <p>
+          <img src="api/images/hlbWtpX4BVGp/3dmm.png" />
+        </p>
+        <ol>
+          <li>优点：</li>
+        </ol>
+        <ul>
+          <li>模型精度高：能够重建出较为精细的人脸细节。</li>
+          <li>灵活性强：可以通过调整模型参数来适应不同角度和表情的人脸。</li>
+          <li>易于实现：算法相对简单，易于在移动端实现实时重建。</li>
+        </ul>
+        <ol>
+          <li>缺点：</li>
+        </ol>
+        <ul>
+          <li>数据依赖性强：需要大量的人脸数据来训练模型。</li>
+          <li>模型细节受限：由于模型特点所致，可能无法生成非常细微的皱纹等特征。</li>
+        </ul>
+        
+<h2>2. 3DMM有什么实际应用?</h2>
+
+        <ul>
+          <li>
+            <p>三维人脸重建：通过输入一张二维人脸图像，利用3DMM方法可以快速重建出该人脸的三维模型。这一技术在虚拟现实、增强现实等领域有着广泛的应用。</p>
+          </li>
+          <li>
+            <p>表情驱动动画：结合blendshape技术，可以将重建出的人脸模型与表情参数相结合，实现表情驱动动画。</p>
+          </li>
+          <li>
+            <p>人脸美化与特效：基于三维人脸模型，可以方便地添加各种人脸特效，如胡子、彩绘、面具等。同时，还可以根据用户的脸型特征进行个性化美化。</p>
+          </li>
+        </ul>
+        
+<h2>3. 目前有哪些开源的3D人脸重建方案?</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th align="center">Rank</th>
+              <th align="center">Method</th>
+              <th align="center">Median(mm)</th>
+              <th align="center">Mean(mm)</th>
+              <th align="center">Std(mm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="center">1.</td>
+              <td align="center"><a href="https://github.com/YadiraF/DECA">DECA[Feng et al., SIGGRAPH 2021]</a>
+              </td>
+              <td align="center">1.09</td>
+              <td align="center">1.38</td>
+              <td align="center">1.18</td>
+            </tr>
+            <tr>
+              <td align="center">2.</td>
+              <td align="center"><a href="https://github.com/sicxu/Deep3DFaceRecon_pytorch">Deep3DFace PyTorch</a>
+              </td>
+              <td align="center">1.11</td>
+              <td align="center">1.41</td>
+              <td align="center">1.21</td>
+            </tr>
+            <tr>
+              <td align="center">3.</td>
+              <td align="center"><a href="https://github.com/soubhiksanyal/RingNet">RingNet [Sanyal et al., CVPR 2019]</a>
+              </td>
+              <td align="center">1.21</td>
+              <td align="center">1.53</td>
+              <td align="center">1.31</td>
+            </tr>
+            <tr>
+              <td align="center">4.</td>
+              <td align="center"><a href="https://github.com/microsoft/Deep3DFaceReconstruction">Deep3DFace [Deng et al., CVPRW 2019]</a>
+              </td>
+              <td align="center">1.23</td>
+              <td align="center">1.54</td>
+              <td align="center">1.29</td>
+            </tr>
+            <tr>
+              <td align="center">5.</td>
+              <td align="center"><a href="https://github.com/cleardusk/3DDFA_V2">3DDFA-V2 [Guo et al., ECCV 2020]</a>
+              </td>
+              <td align="center">1.23</td>
+              <td align="center">1.57</td>
+              <td align="center">1.39</td>
+            </tr>
+            <tr>
+              <td align="center">6.</td>
+              <td align="center"><a href="https://github.com/jiaxiangshang/MGCNet">MGCNet [Shang et al., ECCV 2020]</a>
+              </td>
+              <td align="center">1.31</td>
+              <td align="center">1.87</td>
+              <td align="center">2.63</td>
+            </tr>
+            <tr>
+              <td align="center">7.</td>
+              <td align="center"><a href="https://github.com/YadiraF/PRNet">PRNet [Feng et al., ECCV 2018]</a>
+              </td>
+              <td align="center">1.50</td>
+              <td align="center">1.98</td>
+              <td align="center">1.88</td>
+            </tr>
+            <tr>
+              <td align="center">8.</td>
+              <td align="center"><a href="https://github.com/anhttran/3dmm_cnn">3DMM-CNN [Tran et al., CVPR 2017]</a>
+              </td>
+              <td align="center">1.84</td>
+              <td align="center">2.33</td>
+              <td align="center">2.05</td>
+            </tr>
+          </tbody>
+        </table>
+        
+<h2>4. 目前有哪些开源的3D人脸重建方案?</h2>
+
+        <p>3D人脸重建是一个复杂且具有挑战性的领域，它涉及到从二维图像或视频中提取并重建出人脸的三维模型，其中面临着一些问题：</p>
+        <ol>
+          <li>遮挡和光照问题 在不同的光照条件下和部分遮挡的情况下准确重建人脸是一个挑战。例如，眼镜、头发或手部遮挡面部时，如何准确重建被遮挡区域是一个难题。</li>
+          <li>表情和姿态变化 人脸在不同表情和姿态下的变化复杂多变，捕捉和重建这些变化需要高度精确的算法。表情和姿态的变化会影响人脸的形状和纹理，这增加了重建的复杂性。</li>
+          <li>纹理和细节的捕捉 高精度地重建人脸的纹理和细节，如皮肤的毛孔和皱纹，需要非常精细的技术。这些细节对于实现逼真的3D人脸模型至关重要。</li>
+        </ol>
+        
+<h2>5. FLAME和BFM的区别?</h2>
+
+        <p>FLAME是一个人头模型，BFM是一个人脸模型，直观来看FLAME的输出是一整个三维的人头结构，包括了后脑勺以及脖子，这是BFM模型没有的地方；</p>
+        <ol>
+          <li>FLAME模型通过LBS显式地建模了脖子的旋转、眼球的旋转，也是BFM所不具备的；</li>
+          <li>FLAME模型能够表示的表情要比BFM模型更加丰富，最原始的BFM模型只在200个人数据上拟合而成，而FLAME模型是在33000个人头数据上拟合出来的结果；</li>
+          <li>FLAME模型没有纹理，BFM模型有纹理，但有工作将这两者的mesh对齐，从而使得在FLAME上可以使用BFM的纹理空间； 最近效果比较突出的三个工作：DECA、EMOCA、MICA.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+
+</html>
